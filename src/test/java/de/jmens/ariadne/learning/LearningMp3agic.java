@@ -75,5 +75,17 @@ public class LearningMp3agic {
 		assertThat(original.getId3v2Tag().getAlbum(), isEmptyOrNullString());
 		assertThat(copy.getId3v2Tag().getAlbum(), is("FizzBuzz"));
 	}
+	
+	@Test
+	public void testRemoveTag() throws Exception {
+		Mp3File file = new Mp3File(testfile);
+		file.removeId3v1Tag();
+		file.removeId3v2Tag();
+		
+		assertThat(new Mp3File(testfile).hasId3v2Tag(), is(true));
+		
+		file.save(testfile.getAbsolutePath() + ".new");
+		assertThat(new Mp3File(testfile.getAbsolutePath() + ".new").hasId3v2Tag(), is(false));
+	}
 
 }
