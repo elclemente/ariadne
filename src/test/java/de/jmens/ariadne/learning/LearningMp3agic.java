@@ -3,7 +3,6 @@ package de.jmens.ariadne.learning;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
