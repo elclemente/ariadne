@@ -5,38 +5,21 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import com.mpatric.mp3agic.Mp3File;
 
-public class LearningMp3agic {
+import de.jmens.ariadne.test.FileTest;
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+public class LearningMp3agic extends FileTest {
 
 	private File testfile;
 
 	@Before
 	public void setUp() throws Exception {
-		Path tempfile = Paths.get(folder.getRoot().getAbsolutePath(), "testfile.mp3");
-		
-		try (InputStream mp3file = getClass().getResourceAsStream("/silence_5.mp3")) {
-			Files.copy(mp3file, tempfile);
-		} catch (IOException e) {
-			Assert.fail("Cannot initialize test: " + e.getMessage());
-		}
-
-		testfile = new File(tempfile.toString());
+		testfile = provideTestfile("/silence_5.mp3");
 	}
 
 	@Test
