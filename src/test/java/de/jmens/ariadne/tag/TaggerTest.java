@@ -68,6 +68,34 @@ public class TaggerTest extends FileTest {
 	assertThat(tag.getYear(), is("2000"));
     }
 
+    @Test
+    public void testUpdateTags() throws Exception
+    {
+	final Tagger tagger = Tagger.load(testfileV1).get();
+
+	final ID3Tag tag = tagger.getTag();
+
+	tag.setAlbum("album");
+	tag.setArtist("artist");
+	tag.setComment("comment");
+	tag.setGenre(1);
+	tag.setTitle("title");
+	tag.setTrack("track");
+	tag.setYear("3000");
+
+	tagger.writeTags();
+
+	final ID3Tag result = Tagger.load(testfileV1).get().getTag();
+
+	assertThat(result.getAlbum(), is("album"));
+	assertThat(result.getArtist(), is("artist"));
+	assertThat(result.getComment(), is("comment"));
+	assertThat(result.getGenre(), is(1));
+	assertThat(result.getTitle(), is("title"));
+	assertThat(result.getTrack(), is("track"));
+	assertThat(result.getYear(), is("3000"));
+    }
+
 
 
     @Test

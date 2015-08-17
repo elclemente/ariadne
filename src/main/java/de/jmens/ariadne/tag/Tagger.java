@@ -1,9 +1,13 @@
 package de.jmens.ariadne.tag;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.NotSupportedException;
 
 import de.jmens.ariadne.exception.CannotLoadFileException;
 
@@ -57,5 +61,31 @@ public class Tagger
 	{
 	    return Optional.empty();
 	}
+    }
+
+    public void writeTags()
+    {
+	try
+	{
+	    mp3File.removeId3v1Tag();
+	    mp3File.removeId3v2Tag();
+
+	    mp3File.setId3v2Tag(ID3Tag.toId3v2Tag(tag));
+
+	    final Path directory = Files.createTempDirectory("ariadne-temp-");
+
+	    final Path tempFilepath = directory.resolve(Paths.get(mp3File.getFilename()).getFileName());
+
+	    mp3File.save(tempFilepath.toString());
+
+	    Files.delete(Paths.get(mp3File.getFilename()));
+	    Files.move(tempFilepath, Paths.get(mp3File.getFilename()));
+	}
+	catch (NotSupportedException | IOException e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+
     }
 }
