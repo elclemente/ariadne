@@ -4,8 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -96,6 +100,31 @@ public class TaggerTest extends FileTest {
 	assertThat(result.getYear(), is("3000"));
     }
 
+    @Test
+    public void testUpdateReadonlyFile() throws Exception
+    {
+	final Set<PosixFilePermission> perms = new HashSet<>();
+	perms.add(PosixFilePermission.OWNER_READ);
+	perms.add(PosixFilePermission.GROUP_READ);
+	perms.add(PosixFilePermission.OTHERS_READ);
+
+
+
+	final Tagger tagger = Tagger.load(testfileV2).get();
+	tagger.getTag().setAlbum("foo");
+
+	Files.setPosixFilePermissions(testfileV2, new HashSet<PosixFilePermission>());
+	assertThat(testfileV2.toFile().canWrite(), is(false));
+
+	assertThat(tagger.writeTags(), is(false));
+
+	Files.setPosixFilePermissions(testfileV2, perms);
+	assertThat(Tagger.load(testfileV2).get().getTag().getAlbum(), is("For the weak"));
+
+
+
+
+    }
 
 
     @Test

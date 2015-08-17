@@ -10,6 +10,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
 
 import de.jmens.ariadne.exception.CannotLoadFileException;
+import de.jmens.ariadne.exception.CannotWriteTagsException;
 
 public class Tagger
 {
@@ -63,8 +64,13 @@ public class Tagger
 	}
     }
 
-    public void writeTags()
+    public boolean writeTags()
     {
+	if (! Files.isWritable(Paths.get(mp3File.getFilename())))
+	{
+	    return false;
+	}
+
 	try
 	{
 	    mp3File.removeId3v1Tag();
@@ -80,11 +86,12 @@ public class Tagger
 
 	    Files.delete(Paths.get(mp3File.getFilename()));
 	    Files.move(tempFilepath, Paths.get(mp3File.getFilename()));
+
+	    return true;
 	}
-	catch (NotSupportedException | IOException e)
+	catch (final IOException | NotSupportedException e)
 	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    throw new CannotWriteTagsException(e);
 	}
 
     }
