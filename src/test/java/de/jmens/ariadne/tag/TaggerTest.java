@@ -120,10 +120,6 @@ public class TaggerTest extends FileTest {
 
 	Files.setPosixFilePermissions(testfileV2, perms);
 	assertThat(Tagger.load(testfileV2).get().getTag().getAlbum(), is("For the weak"));
-
-
-
-
     }
 
 

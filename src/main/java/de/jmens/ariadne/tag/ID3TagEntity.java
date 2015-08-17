@@ -1,13 +1,40 @@
 package de.jmens.ariadne.tag;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+@Entity(name="id3tag")
 public class ID3TagEntity implements ID3Tag
 {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name="album")
     private String album;
+
+    @Column(name="artist")
     private String artist;
+
+    @Column(name="comment")
     private String comment;
+
+    @Column(name="title")
     private String title;
+
+    @Column(name="track")
     private String track;
+
+    @Column(name="version")
     private String version;
+
+    @Column(name="year")
     private String year;
 
     @Override
@@ -106,5 +133,11 @@ public class ID3TagEntity implements ID3Tag
     public void setGenre(int genre)
     {
 	this.genre = genre;
+    }
+
+    @Override
+    public String toString()
+    {
+	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

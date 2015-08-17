@@ -73,15 +73,12 @@ public class Tagger
 
 	try
 	{
-	    mp3File.removeId3v1Tag();
-	    mp3File.removeId3v2Tag();
-
-	    mp3File.setId3v2Tag(ID3Tag.toId3v2Tag(tag));
-
 	    final Path directory = Files.createTempDirectory("ariadne-temp-");
-
 	    final Path tempFilepath = directory.resolve(Paths.get(mp3File.getFilename()).getFileName());
 
+	    mp3File.removeId3v1Tag();
+	    mp3File.removeId3v2Tag();
+	    mp3File.setId3v2Tag(ID3Tag.toId3v2Tag(tag));
 	    mp3File.save(tempFilepath.toString());
 
 	    Files.delete(Paths.get(mp3File.getFilename()));
