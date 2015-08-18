@@ -2,11 +2,13 @@ package de.jmens.ariadne.scan;
 
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jmens.ariadne.tag.ID3Tag;
 import de.jmens.ariadne.tag.Tagger;
 
 public class TagSynchronization
@@ -15,29 +17,43 @@ public class TagSynchronization
 
 	public void scan(Path root)
 	{
-		Scanner.newScanner().withEntrypoint(root).applies(null).scan();
-	}
+		final UUID uuid = UUID.randomUUID();
 
-	static class Synchronizer implements Consumer<Path>
-	{
-		@Override
-		public void accept(Path file)
+		// TODO: Persist scan with uuid
+
+		Scanner
+				.newScanner()
+				.withEntrypoint(root)
+				.applies(null)
+				.scan();
+
+		class Synchronizer implements Consumer<Path>
 		{
-			final Optional<Tagger> tagger = Tagger.load(file);
-
-			if (tagger.isPresent())
+			@Override
+			public void accept(Path file)
 			{
-				synchronizeTags(tagger.get());
+				final Optional<Tagger> tagger = Tagger.load(file);
+
+				if (tagger.isPresent())
+				{
+					synchronizeTags(tagger.get());
+				}
+				else
+				{
+					LOG.error("Error while reading {}", file);
+				}
 			}
-			else
+
+			private void synchronizeTags(Tagger tagger)
 			{
-				LOG.error("Error while reading {}", file);
+				final ID3Tag tag = tagger.getTag();
+
+				tag.setScanId(uuid);
+				tag.setFileId(UUID.randomUUID());
+
+				tagger.writeTags();
+
 			}
-		}
-
-		private void synchronizeTags(Tagger tagger)
-		{
-
 		}
 	}
 }

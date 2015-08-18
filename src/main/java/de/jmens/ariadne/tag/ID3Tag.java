@@ -2,6 +2,8 @@ package de.jmens.ariadne.tag;
 
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
+import java.util.UUID;
+
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v1Tag;
 import com.mpatric.mp3agic.ID3v2;
@@ -12,8 +14,6 @@ public interface ID3Tag
 	String getAlbum();
 
 	String getArtist();
-
-	String getComment();
 
 	String getTitle();
 
@@ -35,11 +35,17 @@ public interface ID3Tag
 
 	void setTitle(String title);
 
-	void setComment(String comment);
-
 	void setArtist(String artist);
 
 	void setYear(String string);
+
+	void setScanId(UUID uuid);
+
+	UUID getScanId();
+
+	void setFileId(UUID randomUUID);
+
+	UUID getFileId();
 
 	public static ID3v1 toId3v1Tag(ID3Tag tag)
 	{
@@ -47,7 +53,6 @@ public interface ID3Tag
 
 		result.setAlbum(tag.getAlbum());
 		result.setArtist(tag.getArtist());
-		result.setComment(tag.getComment());
 		result.setGenre(tag.getGenre());
 		result.setTitle(tag.getTitle());
 		result.setTrack(tag.getTrack());
@@ -57,18 +62,19 @@ public interface ID3Tag
 		return result;
 	}
 
-	public static ID3v2 toId3v2Tag(ID3Tag tag)
+	public static ID3v2 toFileTag(ID3Tag tag)
 	{
 		final ID3v24Tag result = new ID3v24Tag();
 
 		result.setAlbum(tag.getAlbum());
 		result.setArtist(tag.getArtist());
-		result.setComment(tag.getComment());
 		result.setGenre(tag.getGenre());
 		result.setTitle(tag.getTitle());
 		result.setTrack(tag.getTrack());
 		result.setYear(tag.getYear());
 		result.setTrack(tag.getTrack());
+		result.setKey(tag.getFileId().toString());
+		result.setComment(tag.getScanId().toString());
 
 		return result;
 	}
@@ -78,19 +84,40 @@ public interface ID3Tag
 		final Tag result = new Tag();
 		result.setAlbum(trimToEmpty(tag.getAlbum()));
 		result.setArtist(trimToEmpty(tag.getArtist()));
-		result.setComment(trimToEmpty(tag.getComment()));
 		result.setGenre(tag.getGenre());
 		result.setTitle(trimToEmpty(tag.getTitle()));
 		result.setTrack(trimToEmpty(tag.getTrack()));
 		result.setVersion(trimToEmpty(tag.getVersion()));
 		result.setYear(trimToEmpty(tag.getYear()));
 
+		if (tag instanceof ID3v2)
+		{
+			result.setFileId(uuidFrom(((ID3v2) tag).getKey()));
+			result.setScanId(uuidFrom(((ID3v2) tag).getComment()));
+		}
+		else
+		{
+			result.setFileId(null);
+			result.setScanId(null);
+		}
+
 		return result;
+	}
+
+	public static UUID uuidFrom(String string)
+	{
+		try
+		{
+			return UUID.fromString(string);
+		}
+		catch (final Exception e)
+		{
+			return null;
+		}
 	}
 
 	public static ID3Tag emtpyTag()
 	{
 		return new Tag();
 	}
-
 }

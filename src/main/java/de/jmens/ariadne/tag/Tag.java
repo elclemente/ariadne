@@ -1,5 +1,7 @@
 package de.jmens.ariadne.tag;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,6 +42,15 @@ public class Tag implements ID3Tag
 	@Column(name = "year")
 	private String year;
 
+	@Column(name = "genre")
+	private int genre;
+
+	@Column(name = "file_id")
+	private UUID fileId;
+
+	@Column(name = "scan_id")
+	private UUID scanId;
+
 	@Override
 	public String getYear()
 	{
@@ -51,8 +62,6 @@ public class Tag implements ID3Tag
 	{
 		this.year = year;
 	}
-
-	private int genre;
 
 	@Override
 	public String getAlbum()
@@ -76,18 +85,6 @@ public class Tag implements ID3Tag
 	public void setArtist(String artist)
 	{
 		this.artist = artist;
-	}
-
-	@Override
-	public String getComment()
-	{
-		return comment;
-	}
-
-	@Override
-	public void setComment(String comment)
-	{
-		this.comment = comment;
 	}
 
 	@Override
@@ -152,5 +149,29 @@ public class Tag implements ID3Tag
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@Override
+	public void setScanId(UUID id)
+	{
+		this.scanId = id;
+	}
+
+	@Override
+	public UUID getScanId()
+	{
+		return this.scanId;
+	}
+
+	@Override
+	public void setFileId(UUID id)
+	{
+		this.fileId = id;
+	}
+
+	@Override
+	public UUID getFileId()
+	{
+		return this.fileId;
 	}
 }
