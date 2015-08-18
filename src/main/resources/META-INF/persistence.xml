@@ -4,19 +4,14 @@
 	version="2.0">
 	<persistence-unit name="ariadne" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-		<class>de.jmens.ariadne.tag.ID3TagEntity</class>
+		<class>de.jmens.ariadne.tag.Tag</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/ariadne" />
 			<property name="javax.persistence.jdbc.user" value="" />
 			<property name="javax.persistence.jdbc.password" value="" />
-			<!-- <property name="javax.persistence.jdbc.user" value="ariadne" /> <property 
-				name="javax.persistence.jdbc.password" value="ariadne" /> -->
-
 		</properties>
 	</persistence-unit>
 </persistence>
