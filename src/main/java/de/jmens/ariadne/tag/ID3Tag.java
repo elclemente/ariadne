@@ -75,7 +75,7 @@ public interface ID3Tag
 
     public static ID3Tag of(ID3v1 tag)
     {
-	final ID3TagEntity result = new ID3TagEntity();
+	final Tag result = new Tag();
 	result.setAlbum(trimToEmpty(tag.getAlbum()));
 	result.setArtist(trimToEmpty(tag.getArtist()));
 	result.setComment(trimToEmpty(tag.getComment()));
@@ -90,7 +90,7 @@ public interface ID3Tag
 
     public static ID3Tag emtpyTag()
     {
-	return new ID3TagEntity();
+	return new Tag();
     }
 
 }

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.jmens.ariadne.tag.ID3TagEntity;
+import de.jmens.ariadne.tag.Tag;
 
 public class PersistenceTest
 {
@@ -56,7 +57,7 @@ public class PersistenceTest
     {
 	final EntityTransaction transaction = em.getTransaction();
 
-	final ID3TagEntity entity = new ID3TagEntity();
+	final Tag entity = new Tag();
 	entity.setAlbum("foo");
 	entity.setArtist("bar");
 
@@ -67,7 +68,7 @@ public class PersistenceTest
 	assertThat(entity.getId(), notNullValue(Integer.class));
 
 	@SuppressWarnings("unchecked")
-	final List<ID3TagEntity> result = em.createQuery("Select t from de.jmens.ariadne.tag.ID3TagEntity t").getResultList();
+	final List<Tag> result = em.createQuery(MessageFormat.format("Select t from {0} t", Tag.class.getSimpleName())).getResultList();
 
 	assertThat(result, hasSize(1));
 	assertThat(result.get(0).getAlbum(), is("foo"));
