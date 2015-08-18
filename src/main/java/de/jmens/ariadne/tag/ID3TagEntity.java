@@ -129,6 +129,16 @@ public class ID3TagEntity implements ID3Tag
 	return genre;
     }
 
+    public Integer getId()
+    {
+	return id;
+    }
+
+    public void setId(Integer id)
+    {
+	this.id = id;
+    }
+
     @Override
     public void setGenre(int genre)
     {
