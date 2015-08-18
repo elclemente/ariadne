@@ -15,12 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.exception.CannotReadFilesException;
 
-public abstract class Scanner
+public class Scanner
 {
     protected Path entryPoint;
     protected Consumer<Path> consumer;
 
     private static final Logger LOG = LoggerFactory.getLogger(Scanner.class);
+
+    Scanner()
+    {
+	super();
+    }
 
     public Scanner withEntrypoint(Path entrypoint)
     {
@@ -38,7 +43,7 @@ public abstract class Scanner
 
     public static Scanner newScanner()
     {
-	return new ScannerImplementation();
+	return new Scanner();
     }
 
     public void scan()
