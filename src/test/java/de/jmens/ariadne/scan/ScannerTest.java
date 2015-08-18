@@ -17,38 +17,38 @@ import de.jmens.ariadne.test.FileTest;
 
 public class ScannerTest extends FileTest
 {
-    private static Path root;
+	private static Path root;
 
-    @BeforeClass
-    public static void setupClass() throws Exception
-    {
-	root = Paths.get(ScannerTest.class.getResource("/tree").toURI());
-    }
+	@BeforeClass
+	public static void setupClass() throws Exception
+	{
+		root = Paths.get(ScannerTest.class.getResource("/tree").toURI());
+	}
 
-    @Test
-    public void test()
-    {
-	final Scanner scanner = Scanner
-		.newScanner()
-		.withEntrypoint(root)
-		.applies( p -> System.out.println(p));
+	@Test
+	public void test()
+	{
+		final Scanner scanner = Scanner
+				.newScanner()
+				.withEntrypoint(root)
+				.applies(p -> System.out.println(p));
 
-	assertThat("entrypoint initialized", scanner.entryPoint, is(root));
-	assertThat("consumer initialized", scanner.consumer, notNullValue());
-    }
+		assertThat("entrypoint initialized", scanner.entryPoint, is(root));
+		assertThat("consumer initialized", scanner.consumer, notNullValue());
+	}
 
-    @Test
-    public void testTreeTraversion() throws Exception
-    {
-	final List<Path> paths = new ArrayList<>();
+	@Test
+	public void testTreeTraversion() throws Exception
+	{
+		final List<Path> paths = new ArrayList<>();
 
-	Scanner
-	.newScanner()
-	.withEntrypoint(root)
-	.applies( p -> paths.add(p))
-	.scan();
+		Scanner
+				.newScanner()
+				.withEntrypoint(root)
+				.applies(p -> paths.add(p))
+				.scan();
 
-	assertThat( paths, hasSize(27));
-    }
+		assertThat(paths, hasSize(27));
+	}
 
 }
