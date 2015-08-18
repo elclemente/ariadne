@@ -17,84 +17,84 @@ import de.jmens.ariadne.exception.CannotReadFilesException;
 
 public class Scanner
 {
-    protected Path entryPoint;
-    protected Consumer<Path> consumer;
+	protected Path entryPoint;
+	protected Consumer<Path> consumer;
 
-    private static final Logger LOG = LoggerFactory.getLogger(Scanner.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Scanner.class);
 
-    Scanner()
-    {
-	super();
-    }
-
-    public Scanner withEntrypoint(Path entrypoint)
-    {
-	this.entryPoint = entrypoint;
-
-	return this;
-    }
-
-    public Scanner applies(Consumer<Path> consumer)
-    {
-	this.consumer = consumer;
-
-	return this;
-    }
-
-    public static Scanner newScanner()
-    {
-	return new Scanner();
-    }
-
-    public void scan()
-    {
-	try
+	Scanner()
 	{
-	    Files.walkFileTree(entryPoint, new FileVisitor());
+		super();
 	}
-	catch (final IOException e)
+
+	public Scanner withEntrypoint(Path entrypoint)
 	{
-	    throw new CannotReadFilesException(e);
+		this.entryPoint = entrypoint;
+
+		return this;
 	}
-    }
 
-    private class FileVisitor extends SimpleFileVisitor<Path>
-    {
-	@Override
-	public FileVisitResult visitFile(Path file, BasicFileAttributes attr) throws IOException
+	public Scanner applies(Consumer<Path> consumer)
 	{
-	    if (attr.isSymbolicLink())
-	    {
-		LOG.debug("Skipping symlink {}", file);
-	    }
-	    else if (attr.isRegularFile())
-	    {
-		final String type = Files.probeContentType(file);
+		this.consumer = consumer;
 
-		if ("audio/mpeg".equalsIgnoreCase(type))
+		return this;
+	}
+
+	public static Scanner newScanner()
+	{
+		return new Scanner();
+	}
+
+	public void scan()
+	{
+		try
 		{
-		    consumer.accept(file);
+			Files.walkFileTree(entryPoint, new FileVisitor());
 		}
-		else
+		catch (final IOException e)
 		{
-		    LOG.info("Skipping non-music file {}", file);
+			throw new CannotReadFilesException(e);
 		}
-	    }
-	    else
-	    {
-		LOG.debug("Skipping {}", file);
-	    }
-
-	    return CONTINUE;
 	}
 
-	@Override
-	public FileVisitResult visitFileFailed(Path file, IOException e)
+	private class FileVisitor extends SimpleFileVisitor<Path>
 	{
-	    LOG.error("Error while reading {}: {}", file, e.getMessage());
+		@Override
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attr) throws IOException
+		{
+			if (attr.isSymbolicLink())
+			{
+				LOG.debug("Skipping symlink {}", file);
+			}
+			else if (attr.isRegularFile())
+			{
+				final String type = Files.probeContentType(file);
 
-	    return CONTINUE;
+				if ("audio/mpeg".equalsIgnoreCase(type))
+				{
+					consumer.accept(file);
+				}
+				else
+				{
+					LOG.info("Skipping non-music file {}", file);
+				}
+			}
+			else
+			{
+				LOG.debug("Skipping {}", file);
+			}
+
+			return CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult visitFileFailed(Path file, IOException e)
+		{
+			LOG.error("Error while reading {}: {}", file, e.getMessage());
+
+			return CONTINUE;
+		}
 	}
-    }
 
 }
