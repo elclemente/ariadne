@@ -1,0 +1,1 @@
+This is a non-music file the scanner should skip.
