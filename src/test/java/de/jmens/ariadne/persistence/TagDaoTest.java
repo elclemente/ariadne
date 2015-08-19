@@ -48,4 +48,15 @@ public class TagDaoTest extends DbTest
 		assertThat(dao.loadById(6), nullValue());
 	}
 
+	@Test
+	public void testUpdateEntity() throws Exception
+	{
+		final TagDao dao = new TagDao(getEntityManager());
+		final TagEntity entity = dao.loadById(1);
+		entity.setAlbum("Foo");
+		dao.store(entity);
+
+		assertThat(dao.loadById(1).getAlbum(), is("Foo"));
+	}
+
 }
