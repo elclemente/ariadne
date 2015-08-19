@@ -13,5 +13,9 @@
 		<level value="DEBUG" />
 		<appender-ref ref="console" />
 	</root>
+	
+	<logger name="log4j.logger.org.hibernate.SQL">
+		<level>DEBUG</level>
+	</logger>
 
 </log4j:configuration>

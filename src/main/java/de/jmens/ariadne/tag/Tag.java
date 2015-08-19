@@ -1,177 +1,118 @@
 package de.jmens.ariadne.tag;
 
+import static org.apache.commons.lang3.StringUtils.trimToEmpty;
+
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v1Tag;
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.ID3v24Tag;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
-@Entity
-@Table(name = "tag")
-
-public class Tag implements ID3Tag
+public interface Tag
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	String getAlbum();
 
-	@Column(name = "album")
-	private String album;
+	String getArtist();
 
-	@Column(name = "artist")
-	private String artist;
+	String getTitle();
 
-	@Column(name = "comment")
-	private String comment;
+	String getTrack();
 
-	@Column(name = "title")
-	private String title;
+	String getYear();
 
-	@Column(name = "track")
-	private String track;
+	int getGenre();
 
-	@Column(name = "version")
-	private String version;
+	void setAlbum(String album);
 
-	@Column(name = "year")
-	private String year;
+	void setGenre(int genre);
 
-	@Column(name = "genre")
-	private int genre;
+	void setTrack(String track);
 
-	@Column(name = "file_id")
-	private UUID fileId;
+	void setTitle(String title);
 
-	@Column(name = "scan_id")
-	private UUID scanId;
+	void setArtist(String artist);
 
-	@Override
-	public String getYear()
+	void setYear(String string);
+
+	void setScanId(UUID uuid);
+
+	UUID getScanId();
+
+	void setFileId(UUID randomUUID);
+
+	UUID getFileId();
+
+	public static ID3v1 toId3v1Tag(Tag tag)
 	{
-		return year;
+		final ID3v1Tag result = new ID3v1Tag();
+
+		result.setAlbum(tag.getAlbum());
+		result.setArtist(tag.getArtist());
+		result.setGenre(tag.getGenre());
+		result.setTitle(tag.getTitle());
+		result.setTrack(tag.getTrack());
+		result.setYear(tag.getYear());
+		result.setTrack(tag.getTrack());
+
+		return result;
 	}
 
-	@Override
-	public void setYear(String year)
+	public static ID3v2 toFileTag(Tag tag)
 	{
-		this.year = year;
+		final ID3v24Tag result = new ID3v24Tag();
+
+		result.setAlbum(tag.getAlbum());
+		result.setArtist(tag.getArtist());
+		result.setGenre(tag.getGenre());
+		result.setTitle(tag.getTitle());
+		result.setTrack(tag.getTrack());
+		result.setYear(tag.getYear());
+		result.setTrack(tag.getTrack());
+		result.setKey(tag.getFileId().toString());
+		result.setComment(tag.getScanId().toString());
+
+		return result;
 	}
 
-	@Override
-	public String getAlbum()
+	public static Tag of(ID3v1 tag)
 	{
-		return album;
+		final TagEntity result = new TagEntity();
+		result.setAlbum(trimToEmpty(tag.getAlbum()));
+		result.setArtist(trimToEmpty(tag.getArtist()));
+		result.setGenre(tag.getGenre());
+		result.setTitle(trimToEmpty(tag.getTitle()));
+		result.setTrack(trimToEmpty(tag.getTrack()));
+		result.setYear(trimToEmpty(tag.getYear()));
+
+		if (tag instanceof ID3v2)
+		{
+			result.setFileId(uuidFrom(((ID3v2) tag).getKey()));
+			result.setScanId(uuidFrom(((ID3v2) tag).getComment()));
+		}
+		else
+		{
+			result.setFileId(null);
+			result.setScanId(null);
+		}
+
+		return result;
 	}
 
-	@Override
-	public void setAlbum(String album)
+	public static UUID uuidFrom(String string)
 	{
-		this.album = album;
+		try
+		{
+			return UUID.fromString(string);
+		}
+		catch (final Exception e)
+		{
+			return null;
+		}
 	}
 
-	@Override
-	public String getArtist()
+	public static Tag emtpyTag()
 	{
-		return artist;
-	}
-
-	@Override
-	public void setArtist(String artist)
-	{
-		this.artist = artist;
-	}
-
-	@Override
-	public String getTitle()
-	{
-		return title;
-	}
-
-	@Override
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-
-	@Override
-	public String getTrack()
-	{
-		return track;
-	}
-
-	@Override
-	public void setTrack(String track)
-	{
-		this.track = track;
-	}
-
-	@Override
-	public String getVersion()
-	{
-		return version;
-	}
-
-	@Override
-	public void setVersion(String version)
-	{
-		this.version = version;
-	}
-
-	@Override
-	public int getGenre()
-	{
-		return genre;
-	}
-
-	public Integer getId()
-	{
-		return id;
-	}
-
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-
-	@Override
-	public void setGenre(int genre)
-	{
-		this.genre = genre;
-	}
-
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Override
-	public void setScanId(UUID id)
-	{
-		this.scanId = id;
-	}
-
-	@Override
-	public UUID getScanId()
-	{
-		return this.scanId;
-	}
-
-	@Override
-	public void setFileId(UUID id)
-	{
-		this.fileId = id;
-	}
-
-	@Override
-	public UUID getFileId()
-	{
-		return this.fileId;
+		return new TagEntity();
 	}
 }

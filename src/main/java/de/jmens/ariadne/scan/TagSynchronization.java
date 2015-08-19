@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.jmens.ariadne.tag.ID3Tag;
+import de.jmens.ariadne.tag.Tag;
 import de.jmens.ariadne.tag.Tagger;
 
 public class TagSynchronization
@@ -46,7 +46,7 @@ public class TagSynchronization
 
 			private void synchronizeTags(Tagger tagger)
 			{
-				final ID3Tag tag = tagger.getTag();
+				final Tag tag = tagger.getTag();
 
 				tag.setScanId(uuid);
 				tag.setFileId(UUID.randomUUID());

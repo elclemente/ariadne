@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.jmens.ariadne.tag.Tag;
+import de.jmens.ariadne.tag.TagEntity;
 
 public class PersistenceTest
 {
@@ -57,7 +57,7 @@ public class PersistenceTest
     {
 	final EntityTransaction transaction = em.getTransaction();
 
-	final Tag entity = new Tag();
+	final TagEntity entity = new TagEntity();
 	entity.setAlbum("foo");
 	entity.setArtist("bar");
 
@@ -68,7 +68,7 @@ public class PersistenceTest
 	assertThat(entity.getId(), notNullValue(Integer.class));
 
 	@SuppressWarnings("unchecked")
-	final List<Tag> result = em.createQuery(MessageFormat.format("Select t from {0} t", Tag.class.getSimpleName())).getResultList();
+	final List<TagEntity> result = em.createQuery(MessageFormat.format("Select t from {0} t", TagEntity.class.getSimpleName())).getResultList();
 
 	assertThat(result, hasSize(1));
 	assertThat(result.get(0).getAlbum(), is("foo"));

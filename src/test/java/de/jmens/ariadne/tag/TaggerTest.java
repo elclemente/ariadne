@@ -48,28 +48,26 @@ public class TaggerTest extends FileTest
 	@Test
 	public void testLoadV1Tags() throws Exception
 	{
-		final ID3Tag tag = Tagger.load(testfileV1).get().getTag();
+		final Tag tag = Tagger.load(testfileV1).get().getTag();
 
 		assertThat(tag.getAlbum(), is("For the weak"));
 		assertThat(tag.getArtist(), is("Decay"));
 		assertThat(tag.getGenre(), is(0));
 		assertThat(tag.getTitle(), is("Foul Friend"));
 		assertThat(tag.getTrack(), is("2"));
-		assertThat(tag.getVersion(), is("1"));
 		assertThat(tag.getYear(), is("2000"));
 	}
 
 	@Test
 	public void testLoadV2Tags() throws Exception
 	{
-		final ID3Tag tag = Tagger.load(testfileV2).get().getTag();
+		final Tag tag = Tagger.load(testfileV2).get().getTag();
 
 		assertThat(tag.getAlbum(), is("For the weak"));
 		assertThat(tag.getArtist(), is("Decay"));
 		assertThat(tag.getGenre(), is(0));
 		assertThat(tag.getTitle(), is("Foul Friend"));
 		assertThat(tag.getTrack(), is("2"));
-		assertThat(tag.getVersion(), is("4.0"));
 		assertThat(tag.getYear(), is("2000"));
 	}
 
@@ -78,7 +76,7 @@ public class TaggerTest extends FileTest
 	{
 		final Tagger tagger = Tagger.load(testfileV1).get();
 
-		final ID3Tag tag = tagger.getTag();
+		final Tag tag = tagger.getTag();
 
 		final UUID fileId = UUID.randomUUID();
 		final UUID scanId = UUID.randomUUID();
@@ -94,7 +92,7 @@ public class TaggerTest extends FileTest
 
 		tagger.writeTags();
 
-		final ID3Tag result = Tagger.load(testfileV1).get().getTag();
+		final Tag result = Tagger.load(testfileV1).get().getTag();
 
 		assertThat(result.getAlbum(), is("album"));
 		assertThat(result.getArtist(), is("artist"));
