@@ -19,7 +19,7 @@ public class Tagger
 
 	Tagger()
 	{
-
+		super();
 	}
 
 	Tagger(Path path) throws CannotLoadFileException

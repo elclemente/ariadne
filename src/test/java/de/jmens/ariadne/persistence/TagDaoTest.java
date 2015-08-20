@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,12 +53,21 @@ public class TagDaoTest extends DbTest
 	@Test
 	public void testUpdateEntity() throws Exception
 	{
+
 		final TagDao dao = new TagDao(getEntityManager());
+
 		final TagEntity entity = dao.loadById(1);
+		final UUID id = UUID.randomUUID();
 		entity.setAlbum("Foo");
+		entity.setScanId(id);
+
 		dao.store(entity);
 
-		assertThat(dao.loadById(1).getAlbum(), is("Foo"));
+		final TagEntity result = dao.loadById(1);
+
+		assertThat(result.getAlbum(), is("Foo"));
+		assertThat(result.getScanId(), is(id));
+		assertThat(result.getFileId(), nullValue());
 	}
 
 }
