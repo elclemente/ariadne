@@ -50,5 +50,4 @@ public class ScannerTest extends FileTest
 
 		assertThat(paths, hasSize(27));
 	}
-
 }

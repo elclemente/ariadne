@@ -25,6 +25,11 @@ public class DbTest extends FileTest
 	@BeforeClass
 	public static void setupClass() throws Exception
 	{
+		initializeEntitymanager();
+	}
+
+	protected static void initializeEntitymanager() throws Exception
+	{
 		entityManagerFactory = Persistence.createEntityManagerFactory("ariadne");
 
 		installSchema();

@@ -19,14 +19,6 @@ public class TagSynchronization
 	{
 		final UUID uuid = UUID.randomUUID();
 
-		// TODO: Persist scan with uuid
-
-		Scanner
-				.newScanner()
-				.withEntrypoint(root)
-				.applies(null)
-				.scan();
-
 		class Synchronizer implements Consumer<Path>
 		{
 			@Override
@@ -55,5 +47,14 @@ public class TagSynchronization
 
 			}
 		}
+
+		// TODO: Persist scan with uuid
+
+		Scanner
+				.newScanner()
+				.withEntrypoint(root)
+				.applies(new Synchronizer())
+				.scan();
+
 	}
 }
