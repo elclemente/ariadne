@@ -50,6 +50,11 @@ public class FileTest
 		return tempfile;
 	}
 
+	protected Path getTestPath()
+	{
+		return folder.getRoot().toPath();
+	}
+
 	public Path provideRecursively(String resource) throws Exception
 
 	{

@@ -70,7 +70,10 @@ public interface Tag
 		result.setYear(tag.getYear());
 		result.setTrack(tag.getTrack());
 		result.setKey(tag.getFileId().toString());
-		result.setComment(tag.getScanId().toString());
+		if (tag.getScanId() != null)
+		{
+			result.setComment(tag.getScanId().toString());
+		}
 
 		return result;
 	}

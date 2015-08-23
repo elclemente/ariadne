@@ -48,7 +48,11 @@ public class Importer
 		final Tag tag = tagger.getTag();
 
 		tag.setScanId(scanId);
-		tag.setFileId(UUID.randomUUID());
+
+		if (tag.getFileId() == null)
+		{
+			tag.setFileId(UUID.randomUUID());
+		}
 
 		tagger.writeTags();
 
