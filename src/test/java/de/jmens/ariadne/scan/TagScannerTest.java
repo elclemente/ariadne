@@ -46,7 +46,7 @@ public class TagScannerTest extends DbTest
 	@Test
 	public void test()
 	{
-		final TagSynchronization scanner = new TagSynchronization();
+		final Importer scanner = new Importer();
 
 		scanner.scan(root);
 
