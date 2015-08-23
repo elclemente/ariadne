@@ -86,9 +86,16 @@ public class ImporterTest extends DbTest
 	{
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), nullValue());
 
-		new Importer().scan(root);
+		final UUID scanId = new Importer().scan(root);
 
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), not(nullValue()));
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId(), is(scanId));
+	}
+
+	@Test
+	public void testName() throws Exception
+	{
+
 	}
 
 }

@@ -90,7 +90,8 @@ public class FileTest
 		});
 
 		// FIXME: Das muss besser gehen...
-		return Paths.get(folder.getRoot().toPath().toAbsolutePath().toString() + Paths.get(resource).toString());
+		return Paths.get(folder.getRoot().toPath().toAbsolutePath().toString() +
+				Paths.get(resource).toString());
 	}
 
 	private String getRandomString()

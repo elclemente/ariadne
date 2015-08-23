@@ -16,7 +16,7 @@ public class Importer
 
 	private final UUID scanId = UUID.randomUUID();
 
-	public void scan(Path root)
+	public UUID scan(Path root)
 	{
 
 		// TODO: Persist scan with uuid
@@ -26,6 +26,8 @@ public class Importer
 				.withEntrypoint(root)
 				.applies(p -> importFile(p))
 				.scan();
+
+		return scanId;
 
 	}
 
