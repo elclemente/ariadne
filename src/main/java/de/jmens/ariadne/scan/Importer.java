@@ -4,9 +4,13 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.enterprise.context.RequestScoped;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jmens.ariadne.persistence.ScanDao;
+import de.jmens.ariadne.tag.ScanEntity;
 import de.jmens.ariadne.tag.Tag;
 import de.jmens.ariadne.tag.Tagger;
 
@@ -16,16 +20,20 @@ public class Importer
 
 	private final UUID scanId = UUID.randomUUID();
 
+	@RequestScoped
+	private ScanDao scanDao;
+
 	public UUID scan(Path root)
 	{
-
-		// TODO: Persist scan with uuid
+		final ScanEntity scan = scanDao.newScan(scanId);
 
 		Scanner
 				.newScanner()
 				.withEntrypoint(root)
 				.applies(p -> importFile(p))
 				.scan();
+
+		scanDao.finishScan(scan);
 
 		return scanId;
 

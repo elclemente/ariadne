@@ -11,4 +11,15 @@ create table tag (
         file_id varchar(255),
         scan_id varchar(255),
         primary key (id)
-)
+);
+
+drop table if exists scan; 
+
+create table scan (
+	id integer auto_increment, 
+	scan_id varchar(255), 
+	start timestamp, 
+	finish timestamp, 
+	primary key (id), 
+	unique key (scan_id)
+);

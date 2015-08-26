@@ -9,7 +9,7 @@ import de.jmens.ariadne.tag.TagEntity;
 
 public final class TagDao
 {
-	@PersistenceContext
+	@PersistenceContext(unitName = "ariadne")
 	private EntityManager entityManager;
 
 	public TagDao()
