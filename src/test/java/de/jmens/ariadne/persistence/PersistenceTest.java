@@ -7,7 +7,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,7 +34,17 @@ public class PersistenceTest
 	@BeforeClass
 	public static void setupClass()
 	{
-		emf = Persistence.createEntityManagerFactory("ariadne");
+		final Map<String, String> properties = new HashMap<>();
+		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		properties.put("hibernate.hbm2ddl.auto", "verify");
+		properties.put("javax.persistence.jdbc.driver", "org.h2.Driver");
+		properties.put("javax.persistence.jdbc.url", "jdbc:h2:~/ariadne");
+		properties.put("javax.persistence.jdbc.user", "");
+		properties.put("javax.persistence.jdbc.password", "");
+		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.format_sql", "true");
+
+		emf = Persistence.createEntityManagerFactory("ariadne", properties);
 	}
 
 	@AfterClass

@@ -23,6 +23,16 @@ public class Importer
 	@RequestScoped
 	private ScanDao scanDao;
 
+	public Importer()
+	{
+		super();
+	}
+
+	public Importer(ScanDao scanDao)
+	{
+		this.scanDao = scanDao;
+	}
+
 	public UUID scan(Path root)
 	{
 		final ScanEntity scan = scanDao.newScan(scanId);

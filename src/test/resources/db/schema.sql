@@ -10,7 +10,8 @@ create table tag (
         year varchar(255),
         file_id varchar(255),
         scan_id varchar(255),
-        primary key (id)
+        primary key (id), 
+        unique key (file_id)
 );
 
 drop table if exists scan; 

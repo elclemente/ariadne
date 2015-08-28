@@ -2,12 +2,14 @@ package de.jmens.ariadne.persistence;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 import java.util.UUID;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.jmens.ariadne.tag.TagEntity;
@@ -53,7 +55,6 @@ public class TagDaoTest extends DbTest
 	@Test
 	public void testUpdateEntity() throws Exception
 	{
-
 		final TagDao dao = new TagDao(getEntityManager());
 
 		final TagEntity entity = dao.loadById(1);
@@ -67,7 +68,17 @@ public class TagDaoTest extends DbTest
 
 		assertThat(result.getAlbum(), is("Foo"));
 		assertThat(result.getScanId(), is(id));
-		assertThat(result.getFileId(), nullValue());
+		assertThat(result.getFileId(), not(nullValue()));
+	}
+
+	@Test
+	@Ignore
+	public void testUpdateDoesRespectFileId() throws Exception
+	{
+		final TagDao dao = new TagDao(getEntityManager());
+
+		dao.loadById(1);
+
 	}
 
 }

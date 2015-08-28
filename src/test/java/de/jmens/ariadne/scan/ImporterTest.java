@@ -12,7 +12,11 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import de.jmens.ariadne.persistence.ScanDao;
 import de.jmens.ariadne.tag.Tagger;
 import de.jmens.ariadne.test.DbTest;
 
@@ -24,6 +28,12 @@ public class ImporterTest extends DbTest
 
 	private static Path root;
 
+	@Mock
+	private ScanDao scanDao;
+
+	@InjectMocks
+	private Importer importer;
+
 	@BeforeClass
 	public static void setupClass() throws Exception
 	{
@@ -33,6 +43,8 @@ public class ImporterTest extends DbTest
 	@Before
 	public void setUp() throws Exception
 	{
+		MockitoAnnotations.initMocks(this);
+
 		root = provideRecursively("/tree");
 
 		System.out.println(root);
@@ -49,8 +61,6 @@ public class ImporterTest extends DbTest
 	@Test
 	public void test()
 	{
-		final Importer importer = new Importer();
-
 		importer.scan(root);
 
 		final Tagger tagger = Tagger.load(root.resolve(FILE_1_1_1)).get();
@@ -76,7 +86,7 @@ public class ImporterTest extends DbTest
 		tagger.getTag().setFileId(expectedFileid);
 		tagger.writeTags();
 
-		new Importer().scan(root);
+		importer.scan(root);
 
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), is(expectedFileid));
 	}
@@ -86,7 +96,7 @@ public class ImporterTest extends DbTest
 	{
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), nullValue());
 
-		final UUID scanId = new Importer().scan(root);
+		final UUID scanId = importer.scan(root);
 
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), not(nullValue()));
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId(), is(scanId));
