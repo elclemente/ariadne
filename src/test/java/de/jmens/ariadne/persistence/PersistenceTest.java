@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -78,11 +79,11 @@ public class PersistenceTest
 		em.persist(entity);
 		transaction.commit();
 
-		assertThat(entity.getId(), notNullValue(Integer.class));
+		assertThat(entity.getFileId(), notNullValue(UUID.class));
 
-		final Query query = em.createQuery(format("Select t from {0} t where id = :id", TagEntity.class.getSimpleName()));
+		final Query query = em.createQuery(format("Select t from {0} t where file_id = :id", TagEntity.class.getSimpleName()));
 
-		query.setParameter("id", entity.getId());
+		query.setParameter("id", entity.getFileId());
 		@SuppressWarnings("unchecked")
 		final List<TagEntity> result = query.getResultList();
 

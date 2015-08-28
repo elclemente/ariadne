@@ -1,5 +1,7 @@
 package de.jmens.ariadne.persistence;
 
+import java.util.UUID;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -22,7 +24,7 @@ public final class TagDao
 		this.entityManager = entityManager;
 	}
 
-	public TagEntity loadById(int id)
+	public TagEntity loadById(UUID id)
 	{
 		try
 		{
@@ -41,6 +43,12 @@ public final class TagDao
 	public void store(TagEntity tagEntitiy)
 	{
 		entityManager.persist(tagEntitiy);
+	}
+
+	public static void main(String[] args)
+	{
+		System.out.println(UUID.randomUUID());
+		System.out.println(UUID.fromString("1e5822bf-a4fb-4175-8ee3-28f474a6f762"));
 	}
 
 }

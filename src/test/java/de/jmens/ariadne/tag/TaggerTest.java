@@ -13,12 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import com.mpatric.mp3agic.ID3v1Tag;
-import com.mpatric.mp3agic.ID3v24Tag;
-import com.mpatric.mp3agic.Mp3File;
 
 import de.jmens.ariadne.test.FileTest;
 
@@ -123,41 +118,4 @@ public class TaggerTest extends FileTest
 		Files.setPosixFilePermissions(testfileV2, perms);
 		assertThat(Tagger.load(testfileV2).get().getTag().getAlbum(), is("For the weak"));
 	}
-
-	@Test
-	@Ignore
-	public void testName() throws Exception
-	{
-		final ID3v1Tag v1Tag = new ID3v1Tag();
-		v1Tag.setAlbum("For the weak");
-		v1Tag.setArtist("Decay");
-		;
-		v1Tag.setComment("Cool Record");
-		v1Tag.setGenre(0);
-		v1Tag.setTitle("Foul Friend");
-		v1Tag.setTrack("2");
-		v1Tag.setYear("2000");
-
-		final Mp3File file = new Mp3File(testfile.toFile());
-		file.removeCustomTag();
-		file.removeId3v1Tag();
-		file.removeId3v2Tag();
-		file.setId3v1Tag(v1Tag);
-		file.save("/tmp/silence_5_v1tag.mp3");
-
-		final ID3v24Tag v2Tag = new ID3v24Tag();
-		v2Tag.setAlbum("For the weak");
-		v2Tag.setArtist("Decay");
-		;
-		v2Tag.setComment("Cool Record");
-		v2Tag.setGenre(0);
-		v2Tag.setTitle("Foul Friend");
-		v2Tag.setTrack("2");
-		v2Tag.setYear("2000");
-
-		file.removeId3v1Tag();
-		file.setId3v2Tag(v2Tag);
-		file.save("/tmp/silence_5_v2tag.mp3");
-	}
-
 }

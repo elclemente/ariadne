@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.nullValue;
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.jmens.ariadne.tag.TagEntity;
@@ -17,6 +16,8 @@ import de.jmens.ariadne.test.DbTest;
 
 public class TagDaoTest extends DbTest
 {
+	private static final UUID FILEID_1 = UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762");
+
 	@Before
 	public void setup() throws Exception
 	{
@@ -36,7 +37,7 @@ public class TagDaoTest extends DbTest
 		dao.store(entity);
 		getTransaction().commit();
 
-		assertThat(entity.getId(), notNullValue(Integer.class));
+		assertThat(entity.getFileId(), notNullValue(UUID.class));
 	}
 
 	@Test
@@ -44,12 +45,12 @@ public class TagDaoTest extends DbTest
 	{
 		final TagDao dao = new TagDao(getEntityManager());
 
-		assertThat(dao.loadById(1).getId(), is(1));
-		assertThat(dao.loadById(2).getId(), is(2));
-		assertThat(dao.loadById(3).getId(), is(3));
-		assertThat(dao.loadById(4).getId(), is(4));
-		assertThat(dao.loadById(5).getId(), is(5));
-		assertThat(dao.loadById(6), nullValue());
+		assertThat(dao.loadById(UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(UUID.fromString("2d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("2d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(UUID.fromString("6d582abf-a4fb-4175-8ee3-28f474a6f762")), nullValue());
 	}
 
 	@Test
@@ -57,14 +58,14 @@ public class TagDaoTest extends DbTest
 	{
 		final TagDao dao = new TagDao(getEntityManager());
 
-		final TagEntity entity = dao.loadById(1);
+		final TagEntity entity = dao.loadById(FILEID_1);
 		final UUID id = UUID.randomUUID();
 		entity.setAlbum("Foo");
 		entity.setScanId(id);
 
 		dao.store(entity);
 
-		final TagEntity result = dao.loadById(1);
+		final TagEntity result = dao.loadById(FILEID_1);
 
 		assertThat(result.getAlbum(), is("Foo"));
 		assertThat(result.getScanId(), is(id));
@@ -72,13 +73,17 @@ public class TagDaoTest extends DbTest
 	}
 
 	@Test
-	@Ignore
 	public void testUpdateDoesRespectFileId() throws Exception
 	{
 		final TagDao dao = new TagDao(getEntityManager());
 
-		dao.loadById(1);
+		final TagEntity tag = dao.loadById(FILEID_1);
 
+		assertThat(tag.getFileId(), notNullValue());
+
+		tag.setFileId(UUID.randomUUID());
+
+		dao.store(tag);
 	}
 
 }
