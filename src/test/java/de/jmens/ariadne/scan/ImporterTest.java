@@ -14,9 +14,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import de.jmens.ariadne.persistence.ScanDao;
+import de.jmens.ariadne.persistence.tag.TagDao;
+import de.jmens.ariadne.tag.ScanEntity;
 import de.jmens.ariadne.tag.Tagger;
 import de.jmens.ariadne.test.DbTest;
 
@@ -27,6 +30,9 @@ public class ImporterTest extends DbTest
 	private static final String FILE_1_1_1 = "1/1/1/silence_5_v2tag.mp3";
 
 	private static Path root;
+
+	@Mock
+	private TagDao tagDao;
 
 	@Mock
 	private ScanDao scanDao;
@@ -61,6 +67,11 @@ public class ImporterTest extends DbTest
 	@Test
 	public void test()
 	{
+		final ScanEntity scan = new ScanEntity();
+		scan.setScanId(UUID.randomUUID());
+
+		Mockito.doReturn(scan).when(scanDao).newScan();
+
 		importer.scan(root);
 
 		final Tagger tagger = Tagger.load(root.resolve(FILE_1_1_1)).get();
@@ -86,6 +97,11 @@ public class ImporterTest extends DbTest
 		tagger.getTag().setFileId(expectedFileid);
 		tagger.writeTags();
 
+		final ScanEntity scan = new ScanEntity();
+		scan.setScanId(UUID.randomUUID());
+
+		Mockito.doReturn(scan).when(scanDao).newScan();
+
 		importer.scan(root);
 
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), is(expectedFileid));
@@ -96,10 +112,15 @@ public class ImporterTest extends DbTest
 	{
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), nullValue());
 
-		final UUID scanId = importer.scan(root);
+		final ScanEntity newScan = new ScanEntity();
+		newScan.setScanId(UUID.randomUUID());
+
+		Mockito.doReturn(newScan).when(scanDao).newScan();
+
+		final ScanEntity scan = importer.scan(root);
 
 		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), not(nullValue()));
-		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId(), is(scanId));
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId(), is(scan.getScanId()));
 	}
 
 	@Test

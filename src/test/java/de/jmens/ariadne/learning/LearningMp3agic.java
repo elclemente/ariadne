@@ -9,73 +9,95 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.Mp3File;
 
 import de.jmens.ariadne.test.FileTest;
 
-public class LearningMp3agic extends FileTest {
+public class LearningMp3agic extends FileTest
+{
 
-    private File testfile;
+	private File testfile;
 
-    @Before
-    public void setUp() throws Exception {
-	testfile = provideTestfile("/silence_5.mp3");
-    }
+	@Before
+	public void setUp() throws Exception
+	{
+		testfile = provideTestfile("/silence_5.mp3");
+	}
 
-    @Test
-    public void testReadTag() throws Exception {
-	final Mp3File file = new Mp3File(testfile);
+	@Test
+	public void testReadTag() throws Exception
+	{
+		final Mp3File file = new Mp3File(testfile);
 
-	assertThat(file.hasId3v1Tag(), is(false));
-	assertThat(file.hasId3v2Tag(), is(true));
+		assertThat(file.hasId3v1Tag(), is(false));
+		assertThat(file.hasId3v2Tag(), is(true));
 
-	assertThat(file.getId3v2Tag().getComment(), is("From http://www.xamuel.com/blank-mp3s/"));
-    }
+		assertThat(file.getId3v2Tag().getComment(), is("From http://www.xamuel.com/blank-mp3s/"));
+	}
 
-    @Test
-    public void testUpdateTag() throws Exception {
+	@Test
+	public void testUpdateTag() throws Exception
+	{
 
-	final Mp3File file = new Mp3File(testfile);
-	assertThat(file.getId3v2Tag().getAlbum(), isEmptyOrNullString());
+		final Mp3File file = new Mp3File(testfile);
+		assertThat(file.getId3v2Tag().getAlbum(), isEmptyOrNullString());
 
-	file.getId3v2Tag().setAlbum("Freakfunk");
-	assertThat(file.getId3v2Tag().getAlbum(), is("Freakfunk"));
-    }
+		file.getId3v2Tag().setAlbum("Freakfunk");
+		assertThat(file.getId3v2Tag().getAlbum(), is("Freakfunk"));
+	}
 
-    @Test
-    public void testPersistTag() throws Exception {
+	@Test
+	public void testPersistTag() throws Exception
+	{
 
-	final File tempLocation = new File(folder.getRoot(), "copy.mp3");
+		final File tempLocation = new File(folder.getRoot(), "copy.mp3");
 
-	final Mp3File initializer = new Mp3File(testfile);
-	initializer.getId3v2Tag().setAlbum("FizzBuzz");
-	initializer.save(tempLocation.getAbsolutePath());
+		final Mp3File initializer = new Mp3File(testfile);
+		initializer.getId3v2Tag().setAlbum("FizzBuzz");
+		initializer.save(tempLocation.getAbsolutePath());
 
-	final Mp3File original = new Mp3File(testfile);
-	final Mp3File copy = new Mp3File(tempLocation);
+		final Mp3File original = new Mp3File(testfile);
+		final Mp3File copy = new Mp3File(tempLocation);
 
-	assertThat(original.getId3v2Tag().getAlbum(), isEmptyOrNullString());
-	assertThat(copy.getId3v2Tag().getAlbum(), is("FizzBuzz"));
-    }
+		assertThat(original.getId3v2Tag().getAlbum(), isEmptyOrNullString());
+		assertThat(copy.getId3v2Tag().getAlbum(), is("FizzBuzz"));
+	}
 
-    @Test
-    public void testRemoveTag() throws Exception {
-	final Mp3File file = new Mp3File(testfile);
-	file.removeId3v1Tag();
-	file.removeId3v2Tag();
+	@Test
+	public void testRemoveTag() throws Exception
+	{
+		final Mp3File file = new Mp3File(testfile);
+		file.removeId3v1Tag();
+		file.removeId3v2Tag();
 
-	assertThat(new Mp3File(testfile).hasId3v2Tag(), is(true));
+		assertThat(new Mp3File(testfile).hasId3v2Tag(), is(true));
 
-	file.save(testfile.getAbsolutePath() + ".new");
-	assertThat(new Mp3File(testfile.getAbsolutePath() + ".new").hasId3v2Tag(), is(false));
-    }
+		file.save(testfile.getAbsolutePath() + ".new");
+		assertThat(new Mp3File(testfile.getAbsolutePath() + ".new").hasId3v2Tag(), is(false));
+	}
 
-    @Test
-    public void testGetFilename() throws Exception
-    {
-	final Mp3File file = new Mp3File(testfile);
+	@Test
+	public void testGetFilename() throws Exception
+	{
+		final Mp3File file = new Mp3File(testfile);
 
-	assertThat(file.getFilename(), is(testfile.getAbsolutePath()));
-    }
+		assertThat(file.getFilename(), is(testfile.getAbsolutePath()));
+	}
+
+	@Test
+	public void testGenre() throws Exception
+	{
+		final Mp3File file = new Mp3File(testfile);
+
+		final ID3v24Tag tag = new ID3v24Tag();
+		file.setId3v2Tag(tag);
+
+		tag.setGenreDescription("Doom Metal");
+
+		System.out.println(file.getId3v2Tag().getGenre());
+		System.out.println(file.getId3v2Tag().getGenreDescription());
+
+	}
 
 }

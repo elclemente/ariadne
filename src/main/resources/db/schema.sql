@@ -14,11 +14,19 @@ create table tag (
 
 drop table if exists scan; 
 
-create table scan (
-	id integer auto_increment, 
-	scan_id varchar(255), 
+create table scan ( 
+	scan_id varchar(255),
 	start timestamp, 
 	finish timestamp, 
-	primary key (id), 
-	unique key (scan_id)
+	source varchar(255), 
+	primary key (scan_id)
 );
+
+drop table if exists options; 
+
+create table options (
+	id integer auto_increment, 
+	name varchar(255), 
+	value varchar(255), 
+	primary key (id)
+)

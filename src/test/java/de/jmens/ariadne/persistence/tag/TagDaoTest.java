@@ -1,6 +1,7 @@
-package de.jmens.ariadne.persistence;
+package de.jmens.ariadne.persistence.tag;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
@@ -11,6 +12,8 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.jmens.ariadne.persistence.tag.TagDao;
+import de.jmens.ariadne.service.Filter;
 import de.jmens.ariadne.tag.TagEntity;
 import de.jmens.ariadne.test.DbTest;
 
@@ -21,9 +24,7 @@ public class TagDaoTest extends DbTest
 	@Before
 	public void setup() throws Exception
 	{
-		getTransaction().begin();
 		provideTestdata("tags.sql");
-		getTransaction().commit();
 	}
 
 	@Test
@@ -34,7 +35,7 @@ public class TagDaoTest extends DbTest
 		final TagEntity entity = new TagEntity();
 
 		getTransaction().begin();
-		dao.store(entity);
+		dao.saveOrUpdate(entity);
 		getTransaction().commit();
 
 		assertThat(entity.getFileId(), notNullValue(UUID.class));
@@ -63,7 +64,7 @@ public class TagDaoTest extends DbTest
 		entity.setAlbum("Foo");
 		entity.setScanId(id);
 
-		dao.store(entity);
+		dao.saveOrUpdate(entity);
 
 		final TagEntity result = dao.loadById(FILEID_1);
 
@@ -83,7 +84,25 @@ public class TagDaoTest extends DbTest
 
 		tag.setFileId(UUID.randomUUID());
 
-		dao.store(tag);
+		dao.saveOrUpdate(tag);
+	}
+
+	@Test
+	public void testFindTags() throws Exception
+	{
+		final TagDao dao = new TagDao(getEntityManager());
+
+		assertThat(dao.findTags(artistFilter("Demo")), hasSize(0));
+		assertThat(dao.findTags(artistFilter("Demo Artist 1")), hasSize(1));
+		assertThat(dao.findTags(artistFilter("Demo Artist 2")), hasSize(1));
+		assertThat(dao.findTags(artistFilter("Demo Artist*")), hasSize(5));
+	}
+
+	private Filter artistFilter(String artist)
+	{
+		final Filter filter = new Filter();
+		filter.setArtist(artist);
+		return filter;
 	}
 
 }

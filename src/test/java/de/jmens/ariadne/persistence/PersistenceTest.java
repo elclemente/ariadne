@@ -45,7 +45,7 @@ public class PersistenceTest
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");
 
-		emf = Persistence.createEntityManagerFactory("ariadne", properties);
+		emf = Persistence.createEntityManagerFactory("ariadne-test", properties);
 	}
 
 	@AfterClass

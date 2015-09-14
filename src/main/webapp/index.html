@@ -1,12 +1,170 @@
 <html>
+
 <head>
-<head>Ariadne
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/ariadne.css" rel="stylesheet">
+
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/handlebars-v4.0.2.js"></script>
+<script type="text/javascript" src="js/ariadne.js"></script>
 </head>
-	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="js/ariadne.js"></script>
-</head>
+
 <body>
-	<h1>ariadne</h1>
-	Aktiver scan: <div id="activeScan"></div>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="ic	@Convert(converter = UuidConverter.class)
+					on-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Ariadne</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Scans<span class="sr-only">(current)</span></a></li>
+					<li><a href="#">Music</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+	<div class="container">
+
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-body center">
+					<span id="scan_summary"></span>
+					<button id="btn_start_scanner" type="button" class="btn btn-default" onclick="startScanner();">Rescan</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<form id="filter_form" class="form-inline" role="form">
+				<div class="form-group">
+					<label class="control-label" for="genre">Genre:</label><input type="text" class="form-control" id="genre"
+						placeholder="">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="artist">Artist:</label><input value="*" type="text" class="form-control"
+						id="artist" placeholder="">
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-default" onclick="applyFilter()">Search</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3">
+				<select id="file_list" class="selectpicker form-control" size="20" multiple onclick="updateTagEditor();"></select>
+			</div>
+
+			<div class="form-group">
+
+				<div class="col-md-7">
+					<div class="input-group tageditor-input">
+						<span class="input-group-addon taginput_addon" id="input-addon-artist">Artist</span> <input id="input_artist"
+							type="text" class="form-control" placeholder="" aria-describedby="input-addon-artist">
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div id="tageditor_controls_artist"></div>
+				</div>
+
+				<div class="col-md-7">
+					<div class="input-group tageditor-input">
+						<span class="input-group-addon taginput_addon" id="input-addon-album">Album</span> <input id="input_album"
+							type="text" class="form-control" placeholder="" aria-describedby="input-addon-album">
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div id="tageditor_controls_album"></div>
+				</div>
+
+				<div class="col-md-7">
+					<div class="input-group tageditor-input">
+						<span class="input-group-addon taginput_addon" id="input-addon-title">Title</span> <input id="input_title"
+							type="text" class="form-control" placeholder="" aria-describedby="input-addon-title">
+					</div>
+				</div>
+
+				<div class="col-md-2">
+					<div id="tageditor_controls_title"></div>
+				</div>
+
+
+
+
+
+
+
+			</div>
+		</div>
+
+
+
+		<!-- Dropdown/ 
+			<div class="dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="true">
+					Dropdown <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<li><a href="#">Action</a></li>
+					<li><a href="#">Another action</a></li>
+					<li><a href="#">Something else here</a></li>
+					<li><a href="#">Separated link</a></li>
+				</ul>
+			</div>
+			 /Dropdown -->
+
+
+	</div>
+
+
+	<div class="row">
+		<nav>
+			<ul class="pagination">
+				<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<li><a href="#">1</a></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+	</div>
+	</div>
 </body>
+
+<script id="tageditor-controls-template" type="text/x-handlebars-template">
+<div class="btn-group" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      &nbsp;
+      <span class="caret"></span>
+      &nbsp;
+    </button>
+{{#list elements}}{{name}}{{/list}}
+  </div>
+  <button type="button" class="btn btn-default">OK</span></button>
+</div> 
+</script>
+
 </html>

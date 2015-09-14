@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import java.util.UUID;
 
 import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.ID3v1Tag;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
 
@@ -42,21 +41,6 @@ public interface Tag
 	void setFileId(UUID randomUUID);
 
 	UUID getFileId();
-
-	public static ID3v1 toId3v1Tag(Tag tag)
-	{
-		final ID3v1Tag result = new ID3v1Tag();
-
-		result.setAlbum(tag.getAlbum());
-		result.setArtist(tag.getArtist());
-		result.setGenre(tag.getGenre());
-		result.setTitle(tag.getTitle());
-		result.setTrack(tag.getTrack());
-		result.setYear(tag.getYear());
-		result.setTrack(tag.getTrack());
-
-		return result;
-	}
 
 	public static ID3v2 toFileTag(Tag tag)
 	{

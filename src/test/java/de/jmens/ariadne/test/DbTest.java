@@ -42,7 +42,7 @@ public class DbTest extends FileTest
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");
 
-		entityManagerFactory = Persistence.createEntityManagerFactory("ariadne", properties);
+		entityManagerFactory = Persistence.createEntityManagerFactory("ariadne-test", properties);
 
 		installSchema();
 	}
@@ -67,7 +67,9 @@ public class DbTest extends FileTest
 
 	protected void provideTestdata(String resource) throws Exception
 	{
+		getTransaction().begin();
 		executeSqlResource(resource);
+		getTransaction().commit();
 	}
 
 	private void executeSqlResource(String resource) throws Exception

@@ -19,9 +19,11 @@ public class ScanDaoTest extends DbTest
 	private ScanDao dao;
 
 	@Before
-	public void setUp()
+	public void setUp() throws Exception
 	{
 		dao = new ScanDao(getEntityManager());
+
+		provideTestdata("scans.sql");
 	}
 
 	@Test
@@ -35,7 +37,7 @@ public class ScanDaoTest extends DbTest
 		final ScanEntity scan = new ScanDao(getEntityManager()).newScan(scanId);
 		getTransaction().commit();
 
-		assertThat(scan.getId(), not(nullValue()));
+		assertThat(scan.getScanId(), not(nullValue()));
 		assertThat(scan.getScanId(), is(scanId));
 		assertThat(scan.getStart().before(testStart), is(false));
 		assertThat(scan.getFinish(), nullValue());
@@ -69,4 +71,9 @@ public class ScanDaoTest extends DbTest
 		assertThat(finish1, is(finish2));
 	}
 
+	@Test
+	public void testGetLastScan() throws Exception
+	{
+		assertThat(dao.getLastScan().getScanId(), is(UUID.fromString("32345678-90ab-cdef-1234-567890abcdef")));
+	}
 }

@@ -4,24 +4,31 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.persistence.ScanDao;
+import de.jmens.ariadne.persistence.tag.TagDao;
 import de.jmens.ariadne.tag.ScanEntity;
 import de.jmens.ariadne.tag.Tag;
+import de.jmens.ariadne.tag.TagEntity;
 import de.jmens.ariadne.tag.Tagger;
 
+@Stateless
 public class Importer
 {
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
 
-	private final UUID scanId = UUID.randomUUID();
-
-	@RequestScoped
+	@Inject
 	private ScanDao scanDao;
+
+	@Inject
+	private TagDao tagDao;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Importer.class);
 
 	public Importer()
 	{
@@ -33,29 +40,29 @@ public class Importer
 		this.scanDao = scanDao;
 	}
 
-	public UUID scan(Path root)
+	public ScanEntity scan(Path root)
 	{
-		final ScanEntity scan = scanDao.newScan(scanId);
+		final ScanEntity scan = scanDao.newScan();
 
 		Scanner
 				.newScanner()
 				.withEntrypoint(root)
-				.applies(p -> importFile(p))
+				.applies(p -> importFile(p, scan.getScanId()))
 				.scan();
 
 		scanDao.finishScan(scan);
 
-		return scanId;
+		return scan;
 
 	}
 
-	private void importFile(Path file)
+	private void importFile(Path file, UUID scanId)
 	{
 		final Optional<Tagger> tagger = Tagger.load(file);
 
 		if (tagger.isPresent())
 		{
-			updateTags(tagger.get());
+			updateTags(tagger.get(), scanId);
 		}
 		else
 		{
@@ -63,7 +70,7 @@ public class Importer
 		}
 	}
 
-	private void updateTags(Tagger tagger)
+	private void updateTags(Tagger tagger, UUID scanId)
 	{
 		final Tag tag = tagger.getTag();
 
@@ -71,8 +78,18 @@ public class Importer
 
 		if (tag.getFileId() == null)
 		{
-			tag.setFileId(UUID.randomUUID());
+			final UUID fileId = UUID.randomUUID();
+
+			LOGGER.debug("Updating file id to: {}", fileId);
+
+			tag.setFileId(fileId);
 		}
+		else
+		{
+			LOGGER.debug("Keeping existing file id: {}", tag.getFileId());
+		}
+
+		tagDao.saveOrUpdate((TagEntity) tag);
 
 		tagger.writeTags();
 

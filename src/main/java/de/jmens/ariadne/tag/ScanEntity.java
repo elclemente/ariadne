@@ -1,12 +1,11 @@
 package de.jmens.ariadne.tag;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,10 +14,6 @@ import javax.persistence.Table;
 public class ScanEntity
 {
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@Column(name = "scan_id")
 	private UUID scanId;
 
@@ -28,14 +23,17 @@ public class ScanEntity
 	@Column(name = "finish")
 	private Date finish;
 
-	public Integer getId()
+	@Column(name = "source")
+	private File source;
+
+	public File getSource()
 	{
-		return id;
+		return source;
 	}
 
-	public void setId(Integer id)
+	public void setSource(File source)
 	{
-		this.id = id;
+		this.source = source;
 	}
 
 	public UUID getScanId()
