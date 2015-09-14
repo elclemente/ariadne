@@ -102,4 +102,8 @@ public interface Tag
 	{
 		return new TagEntity();
 	}
+
+	byte[] getImage();
+
+	void setImage(byte[] image);
 }

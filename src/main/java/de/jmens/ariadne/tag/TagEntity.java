@@ -2,9 +2,12 @@ package de.jmens.ariadne.tag;
 
 import java.util.UUID;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -41,6 +44,11 @@ public class TagEntity implements Tag
 
 	@Column(name = "genre")
 	private String genre;
+
+	@Lob
+	@Column(name = "image")
+	@Basic(fetch = FetchType.LAZY)
+	private byte[] image;
 
 	@Override
 	public String getYear()
@@ -136,6 +144,18 @@ public class TagEntity implements Tag
 	public UUID getFileId()
 	{
 		return this.fileId;
+	}
+
+	@Override
+	public byte[] getImage()
+	{
+		return image;
+	}
+
+	@Override
+	public void setImage(byte[] image)
+	{
+		this.image = image;
 	}
 
 	@Override

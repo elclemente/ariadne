@@ -9,6 +9,7 @@ create table tag (
         title varchar(255),
         track varchar(255),
         year varchar(255),
+        image blob,
         primary key (file_id)
 );
 
