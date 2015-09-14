@@ -20,11 +20,11 @@ public interface Tag
 
 	String getYear();
 
-	int getGenre();
+	String getGenre();
 
 	void setAlbum(String album);
 
-	void setGenre(int genre);
+	void setGenre(String genre);
 
 	void setTrack(String track);
 
@@ -48,7 +48,7 @@ public interface Tag
 
 		result.setAlbum(tag.getAlbum());
 		result.setArtist(tag.getArtist());
-		result.setGenre(tag.getGenre());
+		result.setGenreDescription(tag.getGenre());
 		result.setTitle(tag.getTitle());
 		result.setTrack(tag.getTrack());
 		result.setYear(tag.getYear());
@@ -67,7 +67,7 @@ public interface Tag
 		final TagEntity result = new TagEntity();
 		result.setAlbum(trimToEmpty(tag.getAlbum()));
 		result.setArtist(trimToEmpty(tag.getArtist()));
-		result.setGenre(tag.getGenre());
+		result.setGenre(tag.getGenreDescription());
 		result.setTitle(trimToEmpty(tag.getTitle()));
 		result.setTrack(trimToEmpty(tag.getTrack()));
 		result.setYear(trimToEmpty(tag.getYear()));

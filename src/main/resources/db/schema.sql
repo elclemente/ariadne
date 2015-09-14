@@ -5,11 +5,11 @@ create table tag (
         scan_id varchar(255),
         album varchar(255),
         artist varchar(255),
-        genre integer,
+        genre varchar(255),
         title varchar(255),
         track varchar(255),
         year varchar(255),
-        primary key (file_id) 
+        primary key (file_id)
 );
 
 drop table if exists scan; 

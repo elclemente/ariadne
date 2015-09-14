@@ -47,7 +47,7 @@ public class TaggerTest extends FileTest
 
 		assertThat(tag.getAlbum(), is("For the weak"));
 		assertThat(tag.getArtist(), is("Decay"));
-		assertThat(tag.getGenre(), is(0));
+		assertThat(tag.getGenre(), is("Blues"));
 		assertThat(tag.getTitle(), is("Foul Friend"));
 		assertThat(tag.getTrack(), is("2"));
 		assertThat(tag.getYear(), is("2000"));
@@ -60,7 +60,7 @@ public class TaggerTest extends FileTest
 
 		assertThat(tag.getAlbum(), is("For the weak"));
 		assertThat(tag.getArtist(), is("Decay"));
-		assertThat(tag.getGenre(), is(0));
+		assertThat(tag.getGenre(), is("Blues"));
 		assertThat(tag.getTitle(), is("Foul Friend"));
 		assertThat(tag.getTrack(), is("2"));
 		assertThat(tag.getYear(), is("2000"));
@@ -78,7 +78,7 @@ public class TaggerTest extends FileTest
 
 		tag.setAlbum("album");
 		tag.setArtist("artist");
-		tag.setGenre(1);
+		tag.setGenre("Doom");
 		tag.setTitle("title");
 		tag.setTrack("track");
 		tag.setYear("3000");
@@ -91,7 +91,7 @@ public class TaggerTest extends FileTest
 
 		assertThat(result.getAlbum(), is("album"));
 		assertThat(result.getArtist(), is("artist"));
-		assertThat(result.getGenre(), is(1));
+		assertThat(result.getGenre(), is("Doom"));
 		assertThat(result.getTitle(), is("title"));
 		assertThat(result.getTrack(), is("track"));
 		assertThat(result.getYear(), is("3000"));

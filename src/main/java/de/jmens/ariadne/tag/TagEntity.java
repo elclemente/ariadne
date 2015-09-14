@@ -40,7 +40,7 @@ public class TagEntity implements Tag
 	private String year;
 
 	@Column(name = "genre")
-	private int genre;
+	private String genre;
 
 	@Override
 	public String getYear()
@@ -103,13 +103,13 @@ public class TagEntity implements Tag
 	}
 
 	@Override
-	public int getGenre()
+	public String getGenre()
 	{
 		return genre;
 	}
 
 	@Override
-	public void setGenre(int genre)
+	public void setGenre(String genre)
 	{
 		this.genre = genre;
 	}
