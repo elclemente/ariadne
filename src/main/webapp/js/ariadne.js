@@ -84,6 +84,8 @@ function applyFilter() {
 		success : function(data) {
 
 			files = {};
+			
+			console.log(data);
 
 			var fileList = "";
 			for (var i = 0; i < data.length; i++) {
@@ -107,12 +109,13 @@ function updateTagEditor() {
 	_updateTageditorInput(values, 'artist');
 	_updateTageditorInput(values, 'album');
 	_updateTageditorInput(values, 'title');
+	_updateTageditorInput(values, 'genre');
 }
 
 function _updateTageditorInput(values, type) {
 
 	var elements = values[type];
-	
+
 	$('#input_' + type).val(Object.keys(elements)[0]);
 	$("#tageditor_controls_" + type).html(templates.tageditorControls({'elements': elements }))
 
@@ -124,18 +127,21 @@ function _getValuesForSelectedFiles(selected) {
 	var artists = {};
 	var albums = {};
 	var titles = {};
+	var genres = {};
 
 	for (i = 0; i < dim; i++) {
 		var id = selected.get(i).text;
 		artists[files[id].artist] = true;
 		albums[files[id].album] = true;
 		titles[files[id].title] = true;
+		genres[files[id].genre] = true;
 	}
 
 	return {
 		'artist' : artists,
 		'album' : albums,
-		'title' : titles
+		'title' : titles,
+		'genre': genres
 	};
 }
 
