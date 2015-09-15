@@ -50,6 +50,9 @@ public class TagEntity implements Tag
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] image;
 
+	@Column(name = "mimetype")
+	private String mimeType;
+
 	@Override
 	public String getYear()
 	{
@@ -156,6 +159,18 @@ public class TagEntity implements Tag
 	public void setImage(byte[] image)
 	{
 		this.image = image;
+	}
+
+	@Override
+	public String getMimeType()
+	{
+		return mimeType;
+	}
+
+	@Override
+	public void setMimeType(String mimeType)
+	{
+		this.mimeType = mimeType;
 	}
 
 	@Override

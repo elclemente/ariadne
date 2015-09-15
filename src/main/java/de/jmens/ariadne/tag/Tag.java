@@ -42,6 +42,14 @@ public interface Tag
 
 	UUID getFileId();
 
+	byte[] getImage();
+
+	void setImage(byte[] image);
+
+	String getMimeType();
+
+	void setMimeType(String mimeType);
+
 	public static ID3v2 toFileTag(Tag tag)
 	{
 		final ID3v24Tag result = new ID3v24Tag();
@@ -58,6 +66,7 @@ public interface Tag
 		{
 			result.setComment(tag.getScanId().toString());
 		}
+		result.setAlbumImage(tag.getImage(), tag.getMimeType());
 
 		return result;
 	}
@@ -74,6 +83,8 @@ public interface Tag
 
 		if (tag instanceof ID3v2)
 		{
+			result.setMimeType(((ID3v2) tag).getAlbumImageMimeType());
+			result.setImage(((ID3v2) tag).getAlbumImage());
 			result.setFileId(uuidFrom(((ID3v2) tag).getKey()));
 			result.setScanId(uuidFrom(((ID3v2) tag).getComment()));
 		}
@@ -102,8 +113,4 @@ public interface Tag
 	{
 		return new TagEntity();
 	}
-
-	byte[] getImage();
-
-	void setImage(byte[] image);
 }
