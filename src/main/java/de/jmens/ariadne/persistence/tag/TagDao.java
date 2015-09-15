@@ -1,7 +1,6 @@
 package de.jmens.ariadne.persistence.tag;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,7 +32,7 @@ public class TagDao
 		this.entityManager = entityManager;
 	}
 
-	public TagEntity loadById(UUID id)
+	public TagEntity loadById(int id)
 	{
 		try
 		{

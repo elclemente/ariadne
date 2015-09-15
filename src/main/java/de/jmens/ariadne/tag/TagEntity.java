@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -21,6 +23,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class TagEntity implements Tag
 {
 	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	@Column(name = "file_id")
 	private UUID fileId = UUID.randomUUID();
 
@@ -52,6 +58,16 @@ public class TagEntity implements Tag
 
 	@Column(name = "mimetype")
 	private String mimeType;
+
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
 	@Override
 	public String getYear()

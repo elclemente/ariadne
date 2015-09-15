@@ -12,14 +12,13 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.jmens.ariadne.persistence.tag.TagDao;
 import de.jmens.ariadne.service.Filter;
 import de.jmens.ariadne.tag.TagEntity;
 import de.jmens.ariadne.test.DbTest;
 
 public class TagDaoTest extends DbTest
 {
-	private static final UUID FILEID_1 = UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762");
+	private static final int FILEID_1 = 1;
 
 	@Before
 	public void setup() throws Exception
@@ -46,12 +45,12 @@ public class TagDaoTest extends DbTest
 	{
 		final TagDao dao = new TagDao(getEntityManager());
 
-		assertThat(dao.loadById(UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762")));
-		assertThat(dao.loadById(UUID.fromString("2d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("2d582abf-a4fb-4175-8ee3-28f474a6f762")));
-		assertThat(dao.loadById(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")));
-		assertThat(dao.loadById(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")));
-		assertThat(dao.loadById(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")).getFileId(), is(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")));
-		assertThat(dao.loadById(UUID.fromString("6d582abf-a4fb-4175-8ee3-28f474a6f762")), nullValue());
+		assertThat(dao.loadById(1).getFileId(), is(UUID.fromString("1d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(2).getFileId(), is(UUID.fromString("2d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(3).getFileId(), is(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(4).getFileId(), is(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(5).getFileId(), is(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(6), nullValue());
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 drop table if exists tag; 
 
 create table tag (
+		id integer auto_increment,
         file_id varchar(255),
         scan_id varchar(255),
         album varchar(255),
@@ -11,7 +12,7 @@ create table tag (
         year varchar(255),
         image blob,
 		mimetype varchar(255),
-        primary key (file_id)
+        primary key (id)
 );
 
 drop table if exists scan; 
