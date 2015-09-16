@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -50,6 +51,7 @@ public class TagDaoTest extends DbTest
 		assertThat(dao.loadById(3).getFileId(), is(UUID.fromString("3d582abf-a4fb-4175-8ee3-28f474a6f762")));
 		assertThat(dao.loadById(4).getFileId(), is(UUID.fromString("4d582abf-a4fb-4175-8ee3-28f474a6f762")));
 		assertThat(dao.loadById(5).getFileId(), is(UUID.fromString("5d582abf-a4fb-4175-8ee3-28f474a6f762")));
+		assertThat(dao.loadById(1).getPath(), is(Paths.get("/tmp/foo")));
 		assertThat(dao.loadById(6), nullValue());
 	}
 

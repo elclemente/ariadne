@@ -101,7 +101,7 @@ function applyFilter(fetchAll) {
 			for (var i = 0; i < data.length; i++) {
 				files[data[i].fileId] = data[i];
 				$('#file_list').append(
-						'<option>' + data[i].fileId + '</option>');
+						'<option value="' + data[i].fileId + '">' + basename(data[i].path) + '</option>');
 			}
 		},
 		errors : function(data) {
@@ -142,14 +142,13 @@ function _updateTageditorInput(values, type) {
 
 function _getValuesForSelectedFiles(selected) {
 	var dim = selected.get("length");
-
 	var artists = {};
 	var albums = {};
 	var titles = {};
 	var genres = {};
 
 	for (i = 0; i < dim; i++) {
-		var id = selected.get(i).text;
+		var id = selected.get(i).value;
 		artists[files[id].artist] = true;
 		albums[files[id].album] = true;
 		titles[files[id].title] = true;
@@ -163,7 +162,7 @@ function _getValuesForSelectedFiles(selected) {
 		'genre' : genres,
 	};
 
-	var image = files[selected.get(0).text].image;
+	var image = files[selected.get(0).value].image;
 
 	if (image !== null) {
 		result.image = image
@@ -182,4 +181,12 @@ function _countMembers(object) {
 		counter++;
 	}
 	return counter;
+}
+
+function basename(str)
+{
+   var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+    if(base.lastIndexOf(".") != -1)       
+        base = base.substring(0, base.lastIndexOf("."));
+   return base;
 }

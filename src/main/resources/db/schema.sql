@@ -10,6 +10,7 @@ create table tag (
         title varchar(255),
         track varchar(255),
         year varchar(255),
+		path varchar(255),
         image blob,
 		mimetype varchar(255),
         primary key (id)

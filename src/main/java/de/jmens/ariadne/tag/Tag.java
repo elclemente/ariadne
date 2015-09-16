@@ -2,11 +2,13 @@ package de.jmens.ariadne.tag;
 
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
+import java.io.File;
 import java.util.UUID;
 
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
+import com.mpatric.mp3agic.Mp3File;
 
 public interface Tag
 {
@@ -50,6 +52,10 @@ public interface Tag
 
 	void setMimeType(String mimeType);
 
+	void setPath(File path);
+
+	File getPath();
+
 	public static ID3v2 toFileTag(Tag tag)
 	{
 		final ID3v24Tag result = new ID3v24Tag();
@@ -69,6 +75,28 @@ public interface Tag
 		result.setAlbumImage(tag.getImage(), tag.getMimeType());
 
 		return result;
+	}
+
+	public static Tag of(Mp3File mp3File)
+	{
+		final Tag tag;
+
+		if (mp3File.hasId3v2Tag())
+		{
+			tag = Tag.of(mp3File.getId3v2Tag());
+		}
+		else if (mp3File.hasId3v1Tag())
+		{
+			tag = Tag.of(mp3File.getId3v1Tag());
+		}
+		else
+		{
+			tag = Tag.emtpyTag();
+		}
+
+		tag.setPath(new File(mp3File.getFilename()));
+
+		return tag;
 	}
 
 	public static Tag of(ID3v1 tag)

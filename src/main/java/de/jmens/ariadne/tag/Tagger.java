@@ -1,5 +1,6 @@
 package de.jmens.ariadne.tag;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,18 +29,7 @@ public class Tagger
 		{
 			mp3File = new Mp3File(path.toFile());
 
-			if (mp3File.hasId3v2Tag())
-			{
-				this.tag = Tag.of(mp3File.getId3v2Tag());
-			}
-			else if (mp3File.hasId3v1Tag())
-			{
-				this.tag = Tag.of(mp3File.getId3v1Tag());
-			}
-			else
-			{
-				this.tag = Tag.emtpyTag();
-			}
+			this.tag = Tag.of(mp3File);
 		}
 		catch (final Exception e)
 		{
@@ -50,6 +40,11 @@ public class Tagger
 	public Tag getTag()
 	{
 		return tag;
+	}
+
+	public File getFilepath()
+	{
+		return new File(mp3File.getFilename());
 	}
 
 	public static Optional<Tagger> load(Path testfile)

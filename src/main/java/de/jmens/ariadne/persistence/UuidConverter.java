@@ -5,7 +5,7 @@ import java.util.UUID;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-@Converter
+@Converter(autoApply = true)
 public class UuidConverter implements AttributeConverter<UUID, String>
 {
 	@Override

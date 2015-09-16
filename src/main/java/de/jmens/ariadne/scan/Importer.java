@@ -75,6 +75,7 @@ public class Importer
 		final Tag tag = tagger.getTag();
 
 		tag.setScanId(scanId);
+		tag.setPath(tagger.getFilepath());
 
 		if (tag.getFileId() == null)
 		{

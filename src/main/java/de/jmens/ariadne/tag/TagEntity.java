@@ -1,9 +1,11 @@
 package de.jmens.ariadne.tag;
 
+import java.io.File;
 import java.util.UUID;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,9 +19,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.jmens.ariadne.persistence.PathConverter;
+
 @Entity
 @Table(name = "tag")
-
 public class TagEntity implements Tag
 {
 	@Id
@@ -59,6 +62,11 @@ public class TagEntity implements Tag
 	@Column(name = "mimetype")
 	private String mimeType;
 
+	@Column(name = "path")
+	@Convert(converter = PathConverter.class)
+
+	private File path;
+
 	public Integer getId()
 	{
 		return id;
@@ -67,6 +75,18 @@ public class TagEntity implements Tag
 	public void setId(Integer id)
 	{
 		this.id = id;
+	}
+
+	@Override
+	public File getPath()
+	{
+		return path;
+	}
+
+	@Override
+	public void setPath(File path)
+	{
+		this.path = path;
 	}
 
 	@Override
