@@ -27,6 +27,8 @@ $(document).ready(
 				}
 			});
 
+			applyFilter(true);
+
 			templates.tageditorControls = Handlebars.compile($(
 					"#tageditor-controls-template").html());
 		});
@@ -68,13 +70,23 @@ function showScanSummary($data) {
 	$("#scan_summary").text(text);
 }
 
-function applyFilter() {
+function applyFilter(fetchAll) {
+
 	$("#file_list").empty();
-	var requestData = {
-		"artist" : $("#artist").val(),
-		"firstResult" : 0,
-		"maxResults" : 10
-	};
+
+	var requestData;
+
+	if (fetchAll == true) {
+		requestData = {
+			'artist' : '*'
+		};
+	} else {
+		requestData = {
+			"artist" : $("#artist").val(),
+			"firstResult" : 0,
+			"maxResults" : 30
+		};
+	}
 
 	$.ajax({
 		url : 'http://localhost:8080/ariadne/service/filter',
@@ -84,12 +96,9 @@ function applyFilter() {
 		success : function(data) {
 
 			files = {};
-			
-			console.log(data);
 
 			var fileList = "";
 			for (var i = 0; i < data.length; i++) {
-				// console.log(data[i]);
 				files[data[i].fileId] = data[i];
 				$('#file_list').append(
 						'<option>' + data[i].fileId + '</option>');
@@ -104,12 +113,20 @@ function applyFilter() {
 function updateTagEditor() {
 	var selected = $("#file_list").find(":selected");
 
-	var type = "artist"; 
+	var type = "artist";
 	var values = _getValuesForSelectedFiles(selected);
 	_updateTageditorInput(values, 'artist');
 	_updateTageditorInput(values, 'album');
 	_updateTageditorInput(values, 'title');
 	_updateTageditorInput(values, 'genre');
+
+	if (typeof values.image === 'undefined') {
+		$("#ItemPreview").hide();
+		document.getElementById("ItemPreview").src = "";
+	} else {
+		document.getElementById("ItemPreview").src = "data:image/png;base64," + values.image;
+		$("#ItemPreview").show();
+	}
 }
 
 function _updateTageditorInput(values, type) {
@@ -117,7 +134,9 @@ function _updateTageditorInput(values, type) {
 	var elements = values[type];
 
 	$('#input_' + type).val(Object.keys(elements)[0]);
-	$("#tageditor_controls_" + type).html(templates.tageditorControls({'elements': elements }))
+	$("#tageditor_controls_" + type).html(templates.tageditorControls({
+		'elements' : elements
+	}))
 
 }
 
@@ -137,12 +156,20 @@ function _getValuesForSelectedFiles(selected) {
 		genres[files[id].genre] = true;
 	}
 
-	return {
+	var result = {
 		'artist' : artists,
 		'album' : albums,
 		'title' : titles,
-		'genre': genres
+		'genre' : genres,
 	};
+
+	var image = files[selected.get(0).text].image;
+
+	if (image !== null) {
+		result.image = image
+	}
+
+	return result;
 }
 
 function _countMembers(object) {
