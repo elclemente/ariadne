@@ -130,14 +130,16 @@ function updateTagEditor() {
 }
 
 function _updateTageditorInput(values, type) {
-
 	var elements = values[type];
+	var context = {
+			'selected': elements, 
+			'value': Object.keys(elements)[0], 
+			'type': type, 
+			'caption': type
+	}
 
+	$("#tageditor_" + type).html(templates.tageditorControls(context))
 	$('#input_' + type).val(Object.keys(elements)[0]);
-	$("#tageditor_controls_" + type).html(templates.tageditorControls({
-		'elements' : elements
-	}))
-
 }
 
 function _getValuesForSelectedFiles(selected) {
