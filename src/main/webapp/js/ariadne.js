@@ -1,6 +1,6 @@
 var ariadne = {
-		files: {}, 
-		templates: {}, 
+	files : {},
+	templates : {},
 }
 
 Handlebars.registerHelper('list', function(items, options) {
@@ -15,21 +15,10 @@ Handlebars.registerHelper('list', function(items, options) {
 
 $(document).ready(
 		function() {
-			$("#scanning").hide();
-
-			$.ajax({
-				url : "http://localhost:8080/ariadne/service/scan",
-				type : "GET",
-				success : function($data) {
-					showScanSummary($data);
-				},
-				error : function($data) {
-					console.log('Cannot fetch last scan');
-				}
+			showScanSummary();
+			_applyFilter({
+				'artist' : '*'
 			});
-
-			applyFilter(true);
-
 			ariadne.templates.tageditorControls = Handlebars.compile($(
 					"#tageditor-controls-template").html());
 			updateTagEditor();
@@ -53,46 +42,49 @@ function startScanner() {
 
 }
 
-function showScanSummary($data) {
-	if (typeof $data.scanId !== 'undefined' && $data.scanId != null) {
+function showScanSummary() {
+	$.ajax({
+		url : "http://localhost:8080/ariadne/service/scan",
+		type : "GET",
+		success : function($data) {
+			if (typeof $data.scanId !== 'undefined' && $data.scanId != null) {
 
-		var text = "";
+				var text = "";
 
-		if ($data.finish == null) {
-			text = "Scanner running";
-		} else {
-			var date = new Date($data.start);
-			text = "Files scaned on " + date;
+				if ($data.finish == null) {
+					text = "Scanner running";
+				} else {
+					var date = new Date($data.start);
+					text = "Files scaned on " + date;
+				}
+
+			} else {
+				text = "No files in database";
+			}
+
+			$("#scan_summary").text(text);
+		},
+		error : function($data) {
+			console.log('Cannot fetch last scan');
 		}
-
-	} else {
-		text = "No files in database";
-	}
-
-	$("#scan_summary").text(text);
+	});
 }
 
-function applyFilter(fetchAll) {
-
-	$("#file_list").empty();
-
-	var requestData;
-
-	if (fetchAll == true) {
-		requestData = {
-			'artist' : '*'
-		};
-	} else {
-		requestData = {
-			"artist" : $("#artist").val(),
-			"firstResult" : 0,
-			"maxResults" : 30
-		};
+function applyFilter() {
+	var filter = {
+		"artist" : $("#artist").val(),
+		"firstResult" : 0,
+		"maxResults" : 30
 	}
 
+	_applyFilter(filter);
+}
+
+function _applyFilter(filter) {
+	$("#file_list").empty();
 	$.ajax({
 		url : 'http://localhost:8080/ariadne/service/filter',
-		data : JSON.stringify(requestData),
+		data : JSON.stringify(filter),
 		type : 'POST',
 		contentType : "application/json",
 		success : function(data) {
@@ -103,7 +95,8 @@ function applyFilter(fetchAll) {
 			for (var i = 0; i < data.length; i++) {
 				ariadne.files[data[i].fileId] = data[i];
 				$('#file_list').append(
-						'<option value="' + data[i].fileId + '">' + basename(data[i].path) + '</option>');
+						'<option value="' + data[i].fileId + '">'
+								+ basename(data[i].path) + '</option>');
 			}
 		},
 		errors : function(data) {
@@ -126,7 +119,8 @@ function updateTagEditor() {
 		$("#ItemPreview").hide();
 		document.getElementById("ItemPreview").src = "";
 	} else {
-		document.getElementById("ItemPreview").src = "data:image/png;base64," + values.image;
+		document.getElementById("ItemPreview").src = "data:image/png;base64,"
+				+ values.image;
 		$("#ItemPreview").show();
 	}
 }
@@ -134,10 +128,10 @@ function updateTagEditor() {
 function _updateTageditorInput(values, type) {
 	var elements = values[type];
 	var context = {
-			'selected': elements, 
-			'value': Object.keys(elements)[0], 
-			'type': type, 
-			'caption': type
+		'selected' : elements,
+		'value' : Object.keys(elements)[0],
+		'type' : type,
+		'caption' : type
 	}
 
 	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
@@ -171,7 +165,6 @@ function _getValuesForSelectedFiles(selected) {
 	if (dim > 0) {
 		image = ariadne.files[selected.get(0).value].image;
 	}
-	
 
 	if (image !== null) {
 		result.image = image
@@ -192,10 +185,9 @@ function _countMembers(object) {
 	return counter;
 }
 
-function basename(str)
-{
-   var base = new String(str).substring(str.lastIndexOf('/') + 1); 
-    if(base.lastIndexOf(".") != -1)       
-        base = base.substring(0, base.lastIndexOf("."));
-   return base;
+function basename(str) {
+	var base = new String(str).substring(str.lastIndexOf('/') + 1);
+	if (base.lastIndexOf(".") != -1)
+		base = base.substring(0, base.lastIndexOf("."));
+	return base;
 }
