@@ -31,6 +31,7 @@ $(document).ready(
 
 			templates.tageditorControls = Handlebars.compile($(
 					"#tageditor-controls-template").html());
+			updateTagEditor();
 		});
 
 function startScanner() {
@@ -144,6 +145,7 @@ function _updateTageditorInput(values, type) {
 
 function _getValuesForSelectedFiles(selected) {
 	var dim = selected.get("length");
+
 	var artists = {};
 	var albums = {};
 	var titles = {};
@@ -164,7 +166,11 @@ function _getValuesForSelectedFiles(selected) {
 		'genre' : genres,
 	};
 
-	var image = files[selected.get(0).value].image;
+	var image = null;
+	if (dim > 0) {
+		image = files[selected.get(0).value].image;
+	}
+	
 
 	if (image !== null) {
 		result.image = image
