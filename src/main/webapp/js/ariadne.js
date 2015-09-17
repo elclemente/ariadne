@@ -1,6 +1,7 @@
-var files = {};
-var templates = {};
-var context = {};
+var ariadne = {
+		files: {}, 
+		templates: {}, 
+}
 
 Handlebars.registerHelper('list', function(items, options) {
 	var out = '<ul class="dropdown-menu">';
@@ -29,7 +30,7 @@ $(document).ready(
 
 			applyFilter(true);
 
-			templates.tageditorControls = Handlebars.compile($(
+			ariadne.templates.tageditorControls = Handlebars.compile($(
 					"#tageditor-controls-template").html());
 			updateTagEditor();
 		});
@@ -96,11 +97,11 @@ function applyFilter(fetchAll) {
 		contentType : "application/json",
 		success : function(data) {
 
-			files = {};
+			ariadne.files = {};
 
 			var fileList = "";
 			for (var i = 0; i < data.length; i++) {
-				files[data[i].fileId] = data[i];
+				ariadne.files[data[i].fileId] = data[i];
 				$('#file_list').append(
 						'<option value="' + data[i].fileId + '">' + basename(data[i].path) + '</option>');
 			}
@@ -139,7 +140,7 @@ function _updateTageditorInput(values, type) {
 			'caption': type
 	}
 
-	$("#tageditor_" + type).html(templates.tageditorControls(context))
+	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
 	$('#input_' + type).val(Object.keys(elements)[0]);
 }
 
@@ -153,10 +154,10 @@ function _getValuesForSelectedFiles(selected) {
 
 	for (i = 0; i < dim; i++) {
 		var id = selected.get(i).value;
-		artists[files[id].artist] = true;
-		albums[files[id].album] = true;
-		titles[files[id].title] = true;
-		genres[files[id].genre] = true;
+		artists[ariadne.files[id].artist] = true;
+		albums[ariadne.files[id].album] = true;
+		titles[ariadne.files[id].title] = true;
+		genres[ariadne.files[id].genre] = true;
 	}
 
 	var result = {
@@ -168,7 +169,7 @@ function _getValuesForSelectedFiles(selected) {
 
 	var image = null;
 	if (dim > 0) {
-		image = files[selected.get(0).value].image;
+		image = ariadne.files[selected.get(0).value].image;
 	}
 	
 
