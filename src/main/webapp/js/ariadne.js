@@ -6,9 +6,9 @@ var ariadne = {
 Handlebars.registerHelper('list', function(items, options) {
 	var out = '<ul class="dropdown-menu">';
 	for ( var element in items) {
-		out = out + "<li>" + options.fn({
-			'name' : element
-		}) + "</li>";
+		var value = options.fn({ 'name' : element }) ;
+		var handler = '$(\'#input_' + this.type + '\').val(\'' + value + '\');';
+		out = out + '<li><a onclick="' + handler + '">' + value + "</a></li>";
 	}
 	return out + "</ul>";
 });
@@ -16,7 +16,7 @@ Handlebars.registerHelper('list', function(items, options) {
 $(document).ready(
 		function() {
 			showScanSummary();
-			_applyFilter({
+			applyFilter({
 				'artist' : '*'
 			});
 			ariadne.templates.tageditorControls = Handlebars.compile($(
@@ -70,18 +70,19 @@ function showScanSummary() {
 	});
 }
 
-function applyFilter() {
-	var filter = {
-		"artist" : $("#artist").val(),
-		"firstResult" : 0,
-		"maxResults" : 30
+function applyFilter(filter) {
+
+	console.log(filter);
+	if (filter === null) {
+		filter = {
+			"artist" : $("#artist").val(),
+			"firstResult" : 0,
+			"maxResults" : 30
+		}
 	}
 
-	_applyFilter(filter);
-}
-
-function _applyFilter(filter) {
 	$("#file_list").empty();
+
 	$.ajax({
 		url : 'http://localhost:8080/ariadne/service/filter',
 		data : JSON.stringify(filter),
@@ -109,11 +110,12 @@ function updateTagEditor() {
 	var selected = $("#file_list").find(":selected");
 
 	var type = "artist";
-	var values = _getValuesForSelectedFiles(selected);
-	_updateTageditorInput(values, 'artist');
-	_updateTageditorInput(values, 'album');
-	_updateTageditorInput(values, 'title');
-	_updateTageditorInput(values, 'genre');
+	var values = getSelectedValues(selected);
+	
+	updateTagInputgroup(values, 'artist');
+	updateTagInputgroup(values, 'album');
+	updateTagInputgroup(values, 'title');
+	updateTagInputgroup(values, 'genre');
 
 	if (typeof values.image === 'undefined') {
 		$("#ItemPreview").hide();
@@ -125,20 +127,7 @@ function updateTagEditor() {
 	}
 }
 
-function _updateTageditorInput(values, type) {
-	var elements = values[type];
-	var context = {
-		'selected' : elements,
-		'value' : Object.keys(elements)[0],
-		'type' : type,
-		'caption' : type
-	}
-
-	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
-	$('#input_' + type).val(Object.keys(elements)[0]);
-}
-
-function _getValuesForSelectedFiles(selected) {
+function getSelectedValues(selected) {
 	var dim = selected.get("length");
 
 	var artists = {};
@@ -171,6 +160,29 @@ function _getValuesForSelectedFiles(selected) {
 	}
 
 	return result;
+}
+
+function updateTageditorInputValue(selected, inputId)
+{
+	console.log(selected + " - " + inputId);
+}
+
+
+function updateTagInputgroup(values, type) {
+	var elements = values[type];
+	var context = {
+		'selected' : elements,
+		'value' : Object.keys(elements)[0],
+		'type' : type,
+		'caption' : type
+	}
+
+	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
+	$('#input_' + type).val(Object.keys(elements)[0]);
+}
+
+function updateInputValue( type, value ) {
+	$('#input_' + type).val(value);
 }
 
 function _countMembers(object) {
