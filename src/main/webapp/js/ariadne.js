@@ -181,10 +181,6 @@ function updateTagInputgroup(values, type) {
 	$('#input_' + type).val(Object.keys(elements)[0]);
 }
 
-function updateInputValue( type, value ) {
-	$('#input_' + type).val(value);
-}
-
 function _countMembers(object) {
 	if (typeof object !== 'object') {
 		return 0;
