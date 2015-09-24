@@ -88,14 +88,55 @@
 				</div>
 
 				<div class="col-md-2">
-					<div id="tageditor_controls_image"></div>
+					<div class="dropdown">
+						<button type="button" class="btn btn-sm btn-round" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="true">
+							<span class="glyphicon glyphicon-th-list"></span>
+						</button>
+
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li><a href="#">Separated link</a></li>
+						</ul>
+					</div>
+
+					<button type="button" class="btn btn-sm btn-round">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+					<span class="badge">42</span>
+
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 
 <script id="tageditor-controls-template" type="text/x-handlebars-template">
+<div class="col-md-4">
+	<div class="input-group tageditor-input">
+		<span class="input-group-addon taginput_addon" id="input-addon-genre">{{ caption }}</span> 
+		<input id="input_{{ type }}" type="text" class="form-control" placeholder="" aria-describedby="input-addon-{{ type }}" value="{{ value }}">
+	</div>
+</div>
+<div class="col-md-2">
+    <div class="dropdown">
+    	<button type="button" class="btn btn-sm btn-round" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+    		aria-expanded="true">
+    		<span class="glyphicon glyphicon-th-list"></span>
+    	</button>
+		{{#list selected}}{{name}}{{/list}}
+    </div>
+    
+    <button type="button" class="btn btn-sm btn-round">
+    	<span class="glyphicon glyphicon-ok"></span>
+    </button>
+    <span class="badge">42</span>
+</div>
+
+</script>
+
+<script id="tageditor-controls-template-deleteme" type="text/x-handlebars-template">
 <div class="col-md-4">
 	<div class="input-group tageditor-input">
 		<span class="input-group-addon taginput_addon" id="input-addon-genre">{{ caption }}</span> 
