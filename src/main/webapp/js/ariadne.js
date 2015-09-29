@@ -10,8 +10,9 @@ Handlebars.registerHelper('list',
 				var value = options.fn({
 					'name' : element
 				});
-				var handler = '$(\'#input_' + this.type + '\').val(\'' + value
-						+ '\');';
+//				var handler = '$(\'#input_' + this.type + '\').val(\'' + value
+//						+ '\');';
+				var handler = "updateTageditorInput('" + this.type + "', '" + value + "');";
 				out = out + '<li><a onclick="' + handler + '">' + value
 						+ "</a></li>";
 			}
@@ -110,29 +111,92 @@ function applyFilter(filter) {
 }
 
 function updateTagEditor() {
-	var selected = $("#file_list").find(":selected");
+	initializeSelectedFiles();
 
 	var type = "artist";
-	var values = getSelectedValues(selected);
 
-	updateTagInputgroup(values, 'artist');
-	updateTagInputgroup(values, 'album');
-	updateTagInputgroup(values, 'title');
-	updateTagInputgroup(values, 'genre');
+	updateTagInputgroup('artist');
+	updateTagInputgroup('album');
+	updateTagInputgroup('title');
+	updateTagInputgroup('genre');
 
-	$("#selectedFileDiv").text(values.mainFile);
+	$("#selectedFileDiv").text(ariadne.selectedFiles.mainFile);
 
-	if (typeof values.image === 'undefined') {
+	if (typeof ariadne.selectedFiles.image === 'undefined') {
 		$("#ItemPreview").hide();
 		document.getElementById("ItemPreview").src = "";
 	} else {
 		document.getElementById("ItemPreview").src = "data:image/png;base64,"
-				+ values.image;
+				+ ariadne.selectedFiles.image;
 		$("#ItemPreview").show();
 	}
 }
 
-function getSelectedValues(selected) {
+function updateTagInputgroup(type) {
+	var selected = ariadne.selectedFiles[type];
+
+	var context = {
+		'selected' : selected,
+		'value' : Object.keys(selected)[0],
+		'type' : type,
+		'caption' : type
+	}
+
+	var value = Object.keys(selected)[0];
+
+	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
+	$('#input_' + type).val(value);
+
+	updateTageditorBadge(type);
+}
+
+function updateTageditorInput(type, value) {
+	$("#input_" + type).val(value);
+	updateTageditorBadge(type);
+}
+
+function updateTageditorBadge(type){
+	var selected = ariadne.selectedFiles[type];
+	var value = $("#input_" + type).val();
+	console.log("Value: " + value);
+	
+	var affectedFiles = 0;
+	for (currentValue in selected) {
+		if (currentValue != value) {
+			affectedFiles += selected[currentValue];
+		}
+	}
+
+	$("#badge_" + type).text(affectedFiles);
+}
+
+function tageditorChanged(type) {
+	updateTageditorBadge(type)
+}
+
+function _countMembers(object) {
+	if (typeof object !== 'object') {
+		return 0;
+	}
+
+	var counter = 0;
+	for (element in object) {
+		counter++;
+	}
+	return counter;
+}
+
+function basename(str) {
+	var base = new String(str).substring(str.lastIndexOf('/') + 1);
+	if (base.lastIndexOf(".") != -1)
+		base = base.substring(0, base.lastIndexOf("."));
+	return base;
+}
+
+function initializeSelectedFiles() {
+
+	var selected = $("#file_list").find(":selected");
+
 	var dim = selected.get("length");
 
 	var artists = {};
@@ -178,53 +242,5 @@ function getSelectedValues(selected) {
 		result.image = image
 	}
 
-	return result;
-}
-
-function updateTageditorInputValue(selected, inputId) {
-	console.log(selected + " - " + inputId);
-}
-
-function updateTagInputgroup(values, type) {
-	var elements = values[type];
-	var context = {
-		'selected' : elements,
-		'value' : Object.keys(elements)[0],
-		'type' : type,
-		'caption' : type
-	}
-
-	var value = Object.keys(elements)[0];
-
-	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
-	$('#input_' + type).val(value);
-
-	selectedValues = values[type];
-	var count = 0;
-	for (currentValue in selectedValues) {
-		if (currentValue != value) {
-			count += selectedValues[currentValue];
-		}
-	}
-	console.log("Files with " + type + " not as " + value + ": " + count);
-	$("#badge_" + type).text(count);
-}
-
-function _countMembers(object) {
-	if (typeof object !== 'object') {
-		return 0;
-	}
-
-	var counter = 0;
-	for (element in object) {
-		counter++;
-	}
-	return counter;
-}
-
-function basename(str) {
-	var base = new String(str).substring(str.lastIndexOf('/') + 1);
-	if (base.lastIndexOf(".") != -1)
-		base = base.substring(0, base.lastIndexOf("."));
-	return base;
+	ariadne.selectedFiles = result;
 }
