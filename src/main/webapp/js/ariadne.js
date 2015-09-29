@@ -120,7 +120,15 @@ function updateTagEditor() {
 	updateTagInputgroup('title');
 	updateTagInputgroup('genre');
 
-	$("#selectedFileDiv").text(ariadne.selectedFiles.mainFile);
+	var text = ariadne.selectedFiles.mainFile;
+	
+	var fileCount = ariadne.selectedFiles.count - 1;
+	if (fileCount > 0) 
+	{
+		text += " and " + fileCount + " other files";
+	}
+	
+	$("#selectedFileDiv").text(text);
 
 	if (typeof ariadne.selectedFiles.image === 'undefined') {
 		$("#ItemPreview").hide();
@@ -228,6 +236,7 @@ function initializeSelectedFiles() {
 		'album' : albums,
 		'title' : titles,
 		'genre' : genres,
+		'count' : dim
 	};
 
 	var image = null;
