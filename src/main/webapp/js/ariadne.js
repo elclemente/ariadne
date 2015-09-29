@@ -3,15 +3,20 @@ var ariadne = {
 	templates : {},
 }
 
-Handlebars.registerHelper('list', function(items, options) {
-	var out = '<ul class="dropdown-menu">';
-	for ( var element in items) {
-		var value = options.fn({ 'name' : element }) ;
-		var handler = '$(\'#input_' + this.type + '\').val(\'' + value + '\');';
-		out = out + '<li><a onclick="' + handler + '">' + value + "</a></li>";
-	}
-	return out + "</ul>";
-});
+Handlebars.registerHelper('list',
+		function(items, options) {
+			var out = '<ul class="dropdown-menu">';
+			for ( var element in items) {
+				var value = options.fn({
+					'name' : element
+				});
+				var handler = '$(\'#input_' + this.type + '\').val(\'' + value
+						+ '\');';
+				out = out + '<li><a onclick="' + handler + '">' + value
+						+ "</a></li>";
+			}
+			return out + "</ul>";
+		});
 
 $(document).ready(
 		function() {
@@ -71,8 +76,6 @@ function showScanSummary() {
 }
 
 function applyFilter(filter) {
-
-	console.log(filter);
 	if (filter === null) {
 		filter = {
 			"artist" : $("#artist").val(),
@@ -111,11 +114,13 @@ function updateTagEditor() {
 
 	var type = "artist";
 	var values = getSelectedValues(selected);
-	
+
 	updateTagInputgroup(values, 'artist');
 	updateTagInputgroup(values, 'album');
 	updateTagInputgroup(values, 'title');
 	updateTagInputgroup(values, 'genre');
+
+	$("#selectedFileDiv").text(values.mainFile);
 
 	if (typeof values.image === 'undefined') {
 		$("#ItemPreview").hide();
@@ -135,12 +140,23 @@ function getSelectedValues(selected) {
 	var titles = {};
 	var genres = {};
 
+	function add(set, element) {
+		if (set[element] == null) {
+			set[element] = 1;
+			return;
+		}
+
+		set[element] += 1;
+	}
+
 	for (i = 0; i < dim; i++) {
-		var id = selected.get(i).value;
-		artists[ariadne.files[id].artist] = true;
-		albums[ariadne.files[id].album] = true;
-		titles[ariadne.files[id].title] = true;
-		genres[ariadne.files[id].genre] = true;
+		var idSelected = selected.get(i).value;
+		var selectedFile = ariadne.files[idSelected];
+
+		add(artists, selectedFile.artist);
+		add(titles, selectedFile.title);
+		add(albums, selectedFile.album);
+		add(genres, selectedFile.genre);
 	}
 
 	var result = {
@@ -153,6 +169,9 @@ function getSelectedValues(selected) {
 	var image = null;
 	if (dim > 0) {
 		image = ariadne.files[selected.get(0).value].image;
+		result.mainFile = selected.get(0).text;
+	} else {
+		result.mainFile = "";
 	}
 
 	if (image !== null) {
@@ -162,11 +181,9 @@ function getSelectedValues(selected) {
 	return result;
 }
 
-function updateTageditorInputValue(selected, inputId)
-{
+function updateTageditorInputValue(selected, inputId) {
 	console.log(selected + " - " + inputId);
 }
-
 
 function updateTagInputgroup(values, type) {
 	var elements = values[type];
@@ -177,8 +194,20 @@ function updateTagInputgroup(values, type) {
 		'caption' : type
 	}
 
+	var value = Object.keys(elements)[0];
+
 	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
-	$('#input_' + type).val(Object.keys(elements)[0]);
+	$('#input_' + type).val(value);
+
+	selectedValues = values[type];
+	var count = 0;
+	for (currentValue in selectedValues) {
+		if (currentValue != value) {
+			count += selectedValues[currentValue];
+		}
+	}
+	console.log("Files with " + type + " not as " + value + ": " + count);
+	$("#badge_" + type).text(count);
 }
 
 function _countMembers(object) {
