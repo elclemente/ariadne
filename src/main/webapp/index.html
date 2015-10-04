@@ -13,6 +13,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/handlebars-v4.0.2.js"></script>
 <script type="text/javascript" src="js/ariadne.js"></script>
+<script type="text/javascript" src="js/tagEditor.js"></script>
+<script type="text/javascript" src="js/filterEditor.js"></script>
 </head>
 
 <body>
@@ -92,42 +94,59 @@
 
 			<div class="form-group">
 
+
 				<div class="col-md-6">
-					<div class="panel panel-default">
-						<div id="selectedFileDiv" class="panel-body">&nbsp;</div>
-					</div>
+					<ul id="" class="nav nav-tabs">
+						<li id="filterEditorTabSelector" role="presentation" class="active"><a onclick="showFilterEditor();" href="#">Search</a></li>
+						<li id="tagEditorTabSelector" role="presentation"><a href="#" onclick="showTagEditor();">Tags</a></li>
+						<li id="toolTabSelector" role="presentation"><a href="#">Tools</a></li>
+					</ul>
 				</div>
 
-				<div id="tageditor_artist"></div>
-				<div id="tageditor_album"></div>
-				<div id="tageditor_title"></div>
-				<div id="tageditor_genre"></div>
+				<div id="tabContent">
+					<div id="filterEditor">
+						Filter
+					</div>
+					<div id="tagEditor" class="hide">
+						<div class="col-md-6">
+							<div class="panel panel-default selectedFileDivContainer">
+								<div id="selectedFileDiv" class="panel-body">&nbsp;</div>
+							</div>
 
-				<div class="col-md-4">
-					<div class="panel panel-default">
-						<div class="panel-heading">Image</div>
-						<div class="panel-body center">
-							<img id="ItemPreview" src="" aria-describedby="input-addon-image" />
 						</div>
-					</div>
-				</div>
 
-				<div class="col-md-2">
-					<button type="button" class="btn btn-sm btn-round">
-						<span class="glyphicon glyphicon-ok"></span>
-					</button>
-					<div class="dropdown noblock">
-						<button type="button" class="btn btn-sm btn-round" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="true">
-							<span class="glyphicon glyphicon-th-list"></span>
-						</button>
+						<div id="tageditor_artist"></div>
+						<div id="tageditor_album"></div>
+						<div id="tageditor_title"></div>
+						<div id="tageditor_genre"></div>
 
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li><a href="#">Separated link</a></li>
-						</ul>
+						<div class="col-md-4">
+							<div class="panel panel-default">
+								<div class="panel-heading">Image</div>
+								<div class="panel-body center">
+									<img id="ItemPreview" src="" aria-describedby="input-addon-image" />
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<button type="button" class="btn btn-sm btn-round">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+							<div class="dropdown noblock">
+								<button type="button" class="btn btn-sm btn-round" id="dropdownMenu1" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="true">
+									<span class="glyphicon glyphicon-th-list"></span>
+								</button>
+
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									<li><a href="#">Action</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Separated link</a></li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
