@@ -77,7 +77,7 @@ function showScanSummary() {
 }
 
 function applyFilter(filter) {
-	if (filter === null) {
+	if ((filter === null) || (typeof(filter) == 'undefined')) {
 		filter = {
 			"artist" : $("#artist").val(),
 			"firstResult" : 0,
@@ -120,15 +120,16 @@ function updateTagEditor() {
 	updateTagInputgroup('title');
 	updateTagInputgroup('genre');
 
-	var text = ariadne.selectedFiles.mainFile;
-	
+	var text = '';
 	var fileCount = ariadne.selectedFiles.count - 1;
+	
+	text += ariadne.selectedFiles.mainFile + '&nbsp;';
 	if (fileCount > 0) 
 	{
 		text += " and " + fileCount + " other files";
 	}
 	
-	$("#selectedFileDiv").text(text);
+	$("#selectedFileDiv").html(text);
 
 	if (typeof ariadne.selectedFiles.image === 'undefined') {
 		$("#ItemPreview").hide();
@@ -166,7 +167,6 @@ function updateTageditorInput(type, value) {
 function updateTageditorBadge(type){
 	var selected = ariadne.selectedFiles[type];
 	var value = $("#input_" + type).val();
-	console.log("Value: " + value);
 	
 	var affectedFiles = 0;
 	for (currentValue in selected) {
