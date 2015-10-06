@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -51,7 +50,7 @@ public class QueryBuilder
 
 	public QueryBuilder addRestriction(String field, String pattern)
 	{
-		if (StringUtils.isBlank(pattern))
+		if (pattern == null)
 		{
 			return this;
 		}
