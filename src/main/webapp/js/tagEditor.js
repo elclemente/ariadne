@@ -79,9 +79,21 @@ function showScanSummary() {
 function applyFilter(filter) {
 	if ((filter === null) || (typeof(filter) == 'undefined')) {
 		filter = {
-			"artist" : $("#artist").val(),
-			"firstResult" : 0,
-			"maxResults" : 30
+				"firstResult" : 0,
+				"maxResults" : 30
+		}; 
+		
+		if ($('#filterEnableArtist').prop('checked') == true) {			
+			filter.artist = $("#filterInputArtist").val();
+		}
+		if ($('#filterEnableAlbum').prop('checked') == true) {			
+			filter.album = $("#filterInputAlbum").val();
+		}
+		if ($('#filterEnableGenre').prop('checked') == true) {			
+			filter.genre = $("#filterInputGenre").val();
+		}
+		if ($('#filterEnableTitle').prop('checked') == true) {			
+			filter.title = $("#filterInputTitle").val();
 		}
 	}
 

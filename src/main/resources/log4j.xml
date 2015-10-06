@@ -5,7 +5,7 @@
 
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c - %m (%c{1}:%L)%n" />
 		</layout>
 	</appender>
 
@@ -16,6 +16,10 @@
 	
 	<logger name="log4j.logger.org.hibernate.SQL">
 		<level>DEBUG</level>
+	</logger>
+
+	<logger name="org.hibernate">
+		<level>WARN</level>
 	</logger>
 
 </log4j:configuration>

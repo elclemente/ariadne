@@ -49,43 +49,9 @@
 				<div class="panel-body center">
 					<span id="scan_summary"></span>
 					<button id="btn_start_scanner" type="button" class="btn btn-default" onclick="startScanner();">Rescan</button>
-					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Search files</button>
 				</div>
 			</div>
 		</div>
-
-		<div class="modal fade" id="myModal" role="dialog">
-			<div class="modal-dialog">
-
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Search files</h4>
-					</div>
-					<div class="modal-body">
-
-						<form id="filter_form" class="form-inline" role="form">
-							<div class="form-group">
-								<label class="control-label" for="genre">Genre:</label><input type="text" class="form-control" id="genre"
-									placeholder="">
-							</div>
-							<div class="form-group">
-								<label class="control-label" for="artist">Artist:</label><input type="text" class="form-control" id="artist"
-									placeholder="">
-							</div>
-						</form>
-
-
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal" onclick="applyFilter()">Apply</button>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
 
 		<div class="row">
 			<div class="col-md-6">
@@ -94,7 +60,6 @@
 
 			<div class="form-group">
 
-
 				<div class="col-md-6">
 					<ul id="" class="nav nav-tabs">
 						<li id="filterEditorTabSelector" role="presentation" class="active"><a onclick="showFilterEditor();" href="#">Search</a></li>
@@ -102,17 +67,47 @@
 						<li id="toolTabSelector" role="presentation"><a href="#">Tools</a></li>
 					</ul>
 				</div>
-
 				<div id="tabContent">
 					<div id="filterEditor">
-						Filter
+						<div class="col-md-6">
+							<div class="panel panel-default selectedFileDivContainer">
+								<div id="filterHeader" class="panel-body">&nbsp;</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonArtist">Artist</span>
+								<span class="input-group-addon"><input id="filterEnableArtist" type="checkbox" aria-label="..."></span>
+								<input id="filterInputArtist" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonArtist" value="" onchange="updateEnablement('Artist')">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonAlbum">Album</span>
+								<span class="input-group-addon"><input id="filterEnableAlbum" type="checkbox" aria-label="..."></span>
+								<input id="filterInputAlbum" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonAlbum" value="" onchange="updateEnablement('Album')">
+							</div>
+
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonTitle">Title</span>
+								<span class="input-group-addon"><input id="filterEnableTitle" type="checkbox" aria-label="..."></span>
+								<input id="filterInputTitle" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTitle" value="" onchange="updateEnablement('Title')">
+							</div>
+
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonGenre">Genre</span>
+								<span class="input-group-addon"><input id="filterEnableGenre" type="checkbox" aria-label="..."></span>
+								<input id="filterInputGenre" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonGenre" value="" onchange="updateEnablement('Genre')">
+							</div>
+
+							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="applyFilter()">Search</button>
+						</div>
 					</div>
 					<div id="tagEditor" class="hide">
 						<div class="col-md-6">
 							<div class="panel panel-default selectedFileDivContainer">
 								<div id="selectedFileDiv" class="panel-body">&nbsp;</div>
 							</div>
-
 						</div>
 
 						<div id="tageditor_artist"></div>

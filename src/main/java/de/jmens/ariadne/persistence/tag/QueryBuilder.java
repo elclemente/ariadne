@@ -1,6 +1,7 @@
 package de.jmens.ariadne.persistence.tag;
 
 import static java.text.MessageFormat.format;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 import java.util.ArrayList;
@@ -9,8 +10,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class QueryBuilder
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueryBuilder.class);
+
 	public static QueryBuilder query()
 	{
 		return new QueryBuilder();
@@ -42,9 +51,14 @@ public class QueryBuilder
 
 	public QueryBuilder addRestriction(String field, String pattern)
 	{
+		if (StringUtils.isBlank(pattern))
+		{
+			return this;
+		}
+
 		final String parameterName = "param" + ++counter;
 
-		final String value = pattern.replaceAll("\\*", "%");
+		final String value = defaultString(pattern).replaceAll("\\*", "%");
 		final String filter = buildFilter(field, value, parameterName);
 
 		if (firstFilter)
@@ -82,6 +96,7 @@ public class QueryBuilder
 
 	public String buildHql()
 	{
+		LOGGER.info("Gnerated statement: {}", hqlBuilder.toString());
 		return trimToEmpty(hqlBuilder.toString());
 	}
 
@@ -91,6 +106,9 @@ public class QueryBuilder
 		{
 			return null;
 		}
+
+		LOGGER.debug("Generated hql: {}", hqlBuilder.toString());
+		LOGGER.debug("Bound values: {}", parameters);
 
 		final Query query = entityManager.createQuery(hqlBuilder.toString());
 
@@ -152,6 +170,12 @@ public class QueryBuilder
 		public String getValue()
 		{
 			return value;
+		}
+
+		@Override
+		public String toString()
+		{
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 		}
 
 	}

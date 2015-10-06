@@ -6,6 +6,8 @@ public class Filter
 {
 	private String genre;
 	private String artist;
+	private String title;
+	private String album;
 
 	private int firstResult;
 	private int maxResults;
@@ -33,6 +35,26 @@ public class Filter
 	public int getFirstResult()
 	{
 		return firstResult;
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+
+	public String getAlbum()
+	{
+		return album;
+	}
+
+	public void setAlbum(String album)
+	{
+		this.album = album;
 	}
 
 	public void setFirstResult(int firstResult)

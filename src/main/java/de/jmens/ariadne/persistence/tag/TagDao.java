@@ -67,6 +67,9 @@ public class TagDao
 		final Query query = QueryBuilder
 				.withEntityManager(entityManager)
 				.addRestriction("artist", filter.getArtist())
+				.addRestriction("genre", filter.getGenre())
+				.addRestriction("album", filter.getAlbum())
+				.addRestriction("title", filter.getTitle())
 				.firstResult(filter.getFirstResult())
 				.maxResults(filter.getMaxResults())
 				.build();
