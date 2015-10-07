@@ -39,20 +39,38 @@ public class TagEntity implements Tag
 	@Column(name = "album")
 	private String album;
 
+	@Column(name = "uncommitted_album")
+	private String uncommittedAlbum;
+
 	@Column(name = "artist")
 	private String artist;
+
+	@Column(name = "uncommitted_artist")
+	private String uncommittedArtist;
 
 	@Column(name = "title")
 	private String title;
 
+	@Column(name = "uncommitted_title")
+	private String uncommittedTitle;
+
 	@Column(name = "track")
 	private String track;
+
+	@Column(name = "uncommitted_track")
+	private String uncommittedTrack;
 
 	@Column(name = "year")
 	private String year;
 
+	@Column(name = "uncommitted_year")
+	private String uncommittedYear;
+
 	@Column(name = "genre")
 	private String genre;
+
+	@Column(name = "uncommitted_genre")
+	private String uncommittedGenre;
 
 	@Lob
 	@Column(name = "image")
@@ -207,6 +225,66 @@ public class TagEntity implements Tag
 	public void setMimeType(String mimeType)
 	{
 		this.mimeType = mimeType;
+	}
+
+	public String getUncommittedAlbum()
+	{
+		return uncommittedAlbum;
+	}
+
+	public void setUncommittedAlbum(String uncommittedAlbum)
+	{
+		this.uncommittedAlbum = uncommittedAlbum;
+	}
+
+	public String getUncommittedArtist()
+	{
+		return uncommittedArtist;
+	}
+
+	public void setUncommittedArtist(String uncommittedArtist)
+	{
+		this.uncommittedArtist = uncommittedArtist;
+	}
+
+	public String getUncommittedTitle()
+	{
+		return uncommittedTitle;
+	}
+
+	public void setUncommittedTitle(String uncommittedTitle)
+	{
+		this.uncommittedTitle = uncommittedTitle;
+	}
+
+	public String getUncommittedTrack()
+	{
+		return uncommittedTrack;
+	}
+
+	public void setUncommittedTrack(String uncommittedTrack)
+	{
+		this.uncommittedTrack = uncommittedTrack;
+	}
+
+	public String getUncommittedYear()
+	{
+		return uncommittedYear;
+	}
+
+	public void setUncommittedYear(String uncommittedYear)
+	{
+		this.uncommittedYear = uncommittedYear;
+	}
+
+	public String getUncommittedGenre()
+	{
+		return uncommittedGenre;
+	}
+
+	public void setUncommittedGenre(String uncommittedGenre)
+	{
+		this.uncommittedGenre = uncommittedGenre;
 	}
 
 	@Override

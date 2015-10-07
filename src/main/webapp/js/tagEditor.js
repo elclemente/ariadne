@@ -3,21 +3,20 @@ var ariadne = {
 	templates : {},
 }
 
-Handlebars.registerHelper('list',
-		function(items, options) {
-			var out = '<ul class="dropdown-menu">';
-			for ( var element in items) {
-				var value = options.fn({
-					'name' : element
-				});
-//				var handler = '$(\'#input_' + this.type + '\').val(\'' + value
-//						+ '\');';
-				var handler = "updateTageditorInput('" + this.type + "', '" + value + "');";
-				out = out + '<li><a onclick="' + handler + '">' + value
-						+ "</a></li>";
-			}
-			return out + "</ul>";
+Handlebars.registerHelper('list', function(items, options) {
+	var out = '<ul class="dropdown-menu">';
+	for ( var element in items) {
+		var value = options.fn({
+			'name' : element
 		});
+		// var handler = '$(\'#input_' + this.type + '\').val(\'' + value
+		// + '\');';
+		var handler = "updateTageditorInput('" + this.type + "', '" + value
+				+ "');";
+		out = out + '<li><a onclick="' + handler + '">' + value + "</a></li>";
+	}
+	return out + "</ul>";
+});
 
 $(document).ready(
 		function() {
@@ -77,28 +76,28 @@ function showScanSummary() {
 }
 
 function applyFilter(filter) {
-	if ((filter === null) || (typeof(filter) == 'undefined')) {
+	if ((filter === null) || (typeof (filter) == 'undefined')) {
 		filter = {
-				"firstResult" : 0,
-				"maxResults" : 30
-		}; 
-		
-		if ($('#filterEnableArtist').prop('checked') == true) {			
+			"firstResult" : 0,
+			"maxResults" : 30
+		};
+
+		if ($('#filterEnableArtist').prop('checked') == true) {
 			filter.artist = $("#filterInputArtist").val();
 		}
-		if ($('#filterEnableAlbum').prop('checked') == true) {			
+		if ($('#filterEnableAlbum').prop('checked') == true) {
 			filter.album = $("#filterInputAlbum").val();
 		}
-		if ($('#filterEnableGenre').prop('checked') == true) {			
+		if ($('#filterEnableGenre').prop('checked') == true) {
 			filter.genre = $("#filterInputGenre").val();
 		}
-		if ($('#filterEnableTitle').prop('checked') == true) {			
+		if ($('#filterEnableTitle').prop('checked') == true) {
 			filter.title = $("#filterInputTitle").val();
 		}
-		if ($('#filterEnableYear').prop('checked') == true) {			
+		if ($('#filterEnableYear').prop('checked') == true) {
 			filter.year = $("#filterInputYear").val();
 		}
-		if ($('#filterEnableTrack').prop('checked') == true) {			
+		if ($('#filterEnableTrack').prop('checked') == true) {
 			filter.track = $("#filterInputTrack").val();
 		}
 	}
@@ -142,13 +141,12 @@ function updateTagEditor() {
 
 	var text = '';
 	var fileCount = ariadne.selectedFiles.count;
-	
+
 	text += ariadne.selectedFiles.mainFile + '&nbsp;';
-	if (fileCount > 1) 
-	{
+	if (fileCount > 1) {
 		text += "(" + fileCount + " files total)";
 	}
-	
+
 	$("#selectedFileDiv").html(text);
 
 	if (typeof ariadne.selectedFiles.image === 'undefined') {
@@ -184,10 +182,10 @@ function updateTageditorInput(type, value) {
 	updateTageditorBadge(type);
 }
 
-function updateTageditorBadge(type){
+function updateTageditorBadge(type) {
 	var selected = ariadne.selectedFiles[type];
 	var value = $("#input_" + type).val();
-	
+
 	var affectedFiles = 0;
 	for (currentValue in selected) {
 		if (currentValue != value) {
@@ -200,6 +198,21 @@ function updateTageditorBadge(type){
 
 function tageditorChanged(type) {
 	updateTageditorBadge(type)
+}
+
+function persistTagValue(type) {
+	var field = type;
+	var value = $("#input_" + type).val();
+	
+	for (id in ariadne.selectedFiles.id) {
+		var requestData = [{
+				'fileid': id,
+				'field': field, 
+				'value': value
+		}];
+	}
+	
+	console.log("Hier weiter: Call zum Backend!");
 }
 
 function _countMembers(object) {
@@ -233,6 +246,7 @@ function initializeSelectedFiles() {
 	var genres = {};
 	var years = {};
 	var tracks = {};
+	var ids = {};
 
 	function add(set, element) {
 		if (set[element] == null) {
@@ -253,9 +267,11 @@ function initializeSelectedFiles() {
 		add(genres, selectedFile.genre);
 		add(years, selectedFile.year);
 		add(tracks, selectedFile.track);
+		add(ids, idSelected);
 	}
 
 	var result = {
+		'id' : ids,
 		'artist' : artists,
 		'album' : albums,
 		'title' : titles,

@@ -13,6 +13,12 @@ create table tag (
 		path varchar(255),
         image blob,
 		mimetype varchar(255),
+        uncommitted_album varchar(255),
+        uncommitted_artist varchar(255),
+        uncommitted_genre varchar(255),
+        uncommitted_title varchar(255),
+        uncommitted_track varchar(255),
+        uncommitted_year varchar(255),
         primary key (id)
 );
 
