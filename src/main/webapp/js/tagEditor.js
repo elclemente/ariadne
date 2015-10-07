@@ -141,12 +141,12 @@ function updateTagEditor() {
 	updateTagInputgroup('track');
 
 	var text = '';
-	var fileCount = ariadne.selectedFiles.count - 1;
+	var fileCount = ariadne.selectedFiles.count;
 	
 	text += ariadne.selectedFiles.mainFile + '&nbsp;';
-	if (fileCount > 0) 
+	if (fileCount > 1) 
 	{
-		text += " and " + fileCount + " other files";
+		text += "(" + fileCount + " files total)";
 	}
 	
 	$("#selectedFileDiv").html(text);
