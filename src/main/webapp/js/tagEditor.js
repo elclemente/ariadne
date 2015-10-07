@@ -95,6 +95,12 @@ function applyFilter(filter) {
 		if ($('#filterEnableTitle').prop('checked') == true) {			
 			filter.title = $("#filterInputTitle").val();
 		}
+		if ($('#filterEnableYear').prop('checked') == true) {			
+			filter.year = $("#filterInputYear").val();
+		}
+		if ($('#filterEnableTrack').prop('checked') == true) {			
+			filter.track = $("#filterInputTrack").val();
+		}
 	}
 
 	$("#file_list").empty();
@@ -131,6 +137,8 @@ function updateTagEditor() {
 	updateTagInputgroup('album');
 	updateTagInputgroup('title');
 	updateTagInputgroup('genre');
+	updateTagInputgroup('year');
+	updateTagInputgroup('track');
 
 	var text = '';
 	var fileCount = ariadne.selectedFiles.count - 1;
@@ -223,6 +231,8 @@ function initializeSelectedFiles() {
 	var albums = {};
 	var titles = {};
 	var genres = {};
+	var years = {};
+	var tracks = {};
 
 	function add(set, element) {
 		if (set[element] == null) {
@@ -241,6 +251,8 @@ function initializeSelectedFiles() {
 		add(titles, selectedFile.title);
 		add(albums, selectedFile.album);
 		add(genres, selectedFile.genre);
+		add(years, selectedFile.year);
+		add(tracks, selectedFile.track);
 	}
 
 	var result = {
@@ -248,6 +260,8 @@ function initializeSelectedFiles() {
 		'album' : albums,
 		'title' : titles,
 		'genre' : genres,
+		'year' : years,
+		'track' : tracks,
 		'count' : dim
 	};
 

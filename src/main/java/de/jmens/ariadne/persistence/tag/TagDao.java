@@ -70,6 +70,8 @@ public class TagDao
 				.addRestriction("genre", filter.getGenre())
 				.addRestriction("album", filter.getAlbum())
 				.addRestriction("title", filter.getTitle())
+				.addRestriction("year", filter.getYear())
+				.addRestriction("track", filter.getTrack())
 				.firstResult(filter.getFirstResult())
 				.maxResults(filter.getMaxResults())
 				.build();

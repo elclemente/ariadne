@@ -8,6 +8,8 @@ public class Filter
 	private String artist;
 	private String title;
 	private String album;
+	private String year;
+	private String track;
 
 	private int firstResult;
 	private int maxResults;
@@ -55,6 +57,26 @@ public class Filter
 	public void setAlbum(String album)
 	{
 		this.album = album;
+	}
+
+	public String getYear()
+	{
+		return year;
+	}
+
+	public void setYear(String year)
+	{
+		this.year = year;
+	}
+
+	public String getTrack()
+	{
+		return track;
+	}
+
+	public void setTrack(String track)
+	{
+		this.track = track;
 	}
 
 	public void setFirstResult(int firstResult)

@@ -43,7 +43,7 @@
 	</nav>
 
 	<div class="container">
-
+		
 		<div class="row">
 			<div class="panel panel-default">
 				<div class="panel-body center">
@@ -99,6 +99,16 @@
 								<span class="input-group-addon"><input id="filterEnableGenre" type="checkbox" aria-label="..."></span>
 								<input id="filterInputGenre" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonGenre" value="" onchange="updateEnablement('Genre')">
 							</div>
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonYear">Year</span>
+								<span class="input-group-addon"><input id="filterEnableYear" type="checkbox" aria-label="..."></span>
+								<input id="filterInputYear" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonYear" value="" onchange="updateEnablement('Year')">
+							</div>
+							<div class="input-group tageditor-input">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonTrack">Track</span>
+								<span class="input-group-addon"><input id="filterEnableTrack" type="checkbox" aria-label="..."></span>
+								<input id="filterInputTrack" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTrack" value="" onchange="updateEnablement('Track')">
+							</div>
 
 							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="applyFilter()">Search</button>
 						</div>
@@ -114,6 +124,8 @@
 						<div id="tageditor_album"></div>
 						<div id="tageditor_title"></div>
 						<div id="tageditor_genre"></div>
+						<div id="tageditor_year"></div>
+						<div id="tageditor_track"></div>
 
 						<div class="col-md-4">
 							<div class="panel panel-default">
