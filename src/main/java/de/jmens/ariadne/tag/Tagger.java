@@ -73,7 +73,7 @@ public class Tagger
 
 			mp3File.removeId3v1Tag();
 			mp3File.removeId3v2Tag();
-			mp3File.setId3v2Tag(Tag.toFileTag(tag));
+			mp3File.setId3v2Tag(tag.toFileTag());
 			mp3File.save(tempFilepath.toString());
 
 			Files.delete(Paths.get(mp3File.getFilename()));

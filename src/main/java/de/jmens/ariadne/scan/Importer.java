@@ -14,7 +14,6 @@ import de.jmens.ariadne.persistence.ScanDao;
 import de.jmens.ariadne.persistence.tag.TagDao;
 import de.jmens.ariadne.tag.ScanEntity;
 import de.jmens.ariadne.tag.Tag;
-import de.jmens.ariadne.tag.TagEntity;
 import de.jmens.ariadne.tag.Tagger;
 
 @Stateless
@@ -90,7 +89,7 @@ public class Importer
 			LOGGER.debug("Keeping existing file id: {}", tag.getFileId());
 		}
 
-		tagDao.saveOrUpdate((TagEntity) tag);
+		tagDao.saveOrUpdate(tag.toEntity());
 
 		tagger.writeTags();
 

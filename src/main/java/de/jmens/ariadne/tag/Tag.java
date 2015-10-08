@@ -10,71 +10,170 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.Mp3File;
 
-public interface Tag
+public class Tag
 {
-	String getAlbum();
+	private UUID fileId;
+	private UUID scanId;
+	private String artist;
+	private String album;
+	private String title;
+	private String genre;
+	private String year;
+	private String track;
+	private byte[] image;
+	private String mimeType;
+	private File path;
 
-	String getArtist();
+	public UUID getFileId()
+	{
+		return fileId;
+	}
 
-	String getTitle();
+	public void setFileId(UUID fileId)
+	{
+		this.fileId = fileId;
+	}
 
-	String getTrack();
+	public UUID getScanId()
+	{
+		return scanId;
+	}
 
-	String getYear();
+	public void setScanId(UUID scanId)
+	{
+		this.scanId = scanId;
+	}
 
-	String getGenre();
+	public String getArtist()
+	{
+		return artist;
+	}
 
-	void setAlbum(String album);
+	public void setArtist(String artist)
+	{
+		this.artist = artist;
+	}
 
-	void setGenre(String genre);
+	public String getAlbum()
+	{
+		return album;
+	}
 
-	void setTrack(String track);
+	public void setAlbum(String album)
+	{
+		this.album = album;
+	}
 
-	void setTitle(String title);
+	public String getTitle()
+	{
+		return title;
+	}
 
-	void setArtist(String artist);
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
 
-	void setYear(String string);
+	public String getGenre()
+	{
+		return genre;
+	}
 
-	void setScanId(UUID uuid);
+	public void setGenre(String genre)
+	{
+		this.genre = genre;
+	}
 
-	UUID getScanId();
+	public String getYear()
+	{
+		return year;
+	}
 
-	void setFileId(UUID randomUUID);
+	public void setYear(String year)
+	{
+		this.year = year;
+	}
 
-	UUID getFileId();
+	public String getTrack()
+	{
+		return track;
+	}
 
-	byte[] getImage();
+	public void setTrack(String track)
+	{
+		this.track = track;
+	}
 
-	void setImage(byte[] image);
+	public byte[] getImage()
+	{
+		return image;
+	}
 
-	String getMimeType();
+	public void setImage(byte[] image)
+	{
+		this.image = image;
+	}
 
-	void setMimeType(String mimeType);
+	public String getMimeType()
+	{
+		return mimeType;
+	}
 
-	void setPath(File path);
+	public void setMimeType(String mimeType)
+	{
+		this.mimeType = mimeType;
+	}
 
-	File getPath();
+	public File getPath()
+	{
+		return path;
+	}
 
-	public static ID3v2 toFileTag(Tag tag)
+	public void setPath(File path)
+	{
+		this.path = path;
+	}
+
+	public ID3v2 toFileTag()
 	{
 		final ID3v24Tag result = new ID3v24Tag();
 
-		result.setAlbum(tag.getAlbum());
-		result.setArtist(tag.getArtist());
-		result.setGenreDescription(tag.getGenre());
-		result.setTitle(tag.getTitle());
-		result.setTrack(tag.getTrack());
-		result.setYear(tag.getYear());
-		result.setTrack(tag.getTrack());
-		result.setKey(tag.getFileId().toString());
-		if (tag.getScanId() != null)
+		result.setAlbum(getAlbum());
+		result.setArtist(getArtist());
+		result.setGenreDescription(getGenre());
+		result.setTitle(getTitle());
+		result.setTrack(getTrack());
+		result.setYear(getYear());
+		result.setTrack(getTrack());
+		result.setKey(getFileId().toString());
+
+		if (getScanId() != null)
 		{
-			result.setComment(tag.getScanId().toString());
+			result.setComment(getScanId().toString());
 		}
-		result.setAlbumImage(tag.getImage(), tag.getMimeType());
+
+		result.setAlbumImage(getImage(), getMimeType());
 
 		return result;
+	}
+
+	public TagEntity toEntity()
+	{
+		final TagEntity result = new TagEntity();
+
+		result.setArtist(getArtist());
+		result.setAlbum(getAlbum());
+		result.setFileId(getFileId());
+		result.setScanId(getScanId());
+		result.setTitle(getTitle());
+		result.setGenre(getGenre());
+		result.setImage(getImage());
+		result.setMimeType(getMimeType());
+		result.setTrack(getTrack());
+		result.setYear(getYear());
+
+		return result;
+
 	}
 
 	public static Tag of(Mp3File mp3File)
@@ -101,7 +200,7 @@ public interface Tag
 
 	public static Tag of(ID3v1 tag)
 	{
-		final TagEntity result = new TagEntity();
+		final Tag result = new Tag();
 		result.setAlbum(trimToEmpty(tag.getAlbum()));
 		result.setArtist(trimToEmpty(tag.getArtist()));
 		result.setGenre(tag.getGenreDescription());
@@ -139,6 +238,6 @@ public interface Tag
 
 	public static Tag emtpyTag()
 	{
-		return new TagEntity();
+		return new Tag();
 	}
 }
