@@ -203,28 +203,26 @@ function tageditorChanged(type) {
 function persistTagValue(type) {
 	var field = type;
 	var value = $("#input_" + type).val();
-	
+
 	for (id in ariadne.selectedFiles.id) {
 		var requestData = {};
-		
-		requestData['fileId'] = id; 
-		requestData[field] = value; 
-	}
-	
-	console.log(requestData);
 
-	$.ajax({
-		url : "http://localhost:8080/ariadne/service/tag",
-		type : "POST",
-		contentType : "application/json",
-		data : JSON.stringify(requestData),
-		success : function($data) {
-			console.log("Tag updated");
-		},
-		error : function($data) {
-			console.log("Cannot update tag");
-		}
-	});
+		requestData['fileId'] = id;
+		requestData[field] = value;
+
+		$.ajax({
+			url : "http://localhost:8080/ariadne/service/tag",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringify(requestData),
+			success : function($data) {
+				console.log("Tag updated");
+			},
+			error : function($data) {
+				console.log("Cannot update tag");
+			}
+		});
+	}
 }
 
 function _countMembers(object) {

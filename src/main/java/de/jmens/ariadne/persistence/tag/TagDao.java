@@ -5,13 +5,16 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.service.Filter;
+import de.jmens.ariadne.tag.Tag;
 import de.jmens.ariadne.tag.TagEntity;
 
 @Stateless
@@ -80,6 +83,33 @@ public class TagDao
 		final List<TagEntity> result = query.getResultList();
 
 		LOGGER.info("Filter matches {} entries", result.size());
+
+		return result;
+	}
+
+	public TagEntity findMatching(Tag tag)
+	{
+		final String hql = "select t from TagEntity t where t.fileId = :fileId";
+
+		TagEntity result;
+
+		try
+		{
+			final TypedQuery<TagEntity> query = entityManager.createQuery(hql, TagEntity.class);
+			query.setParameter("fileId", tag.getFileId());
+
+			result = query.getSingleResult();
+		}
+		catch (final NoResultException e)
+		{
+			result = null;
+		}
+		catch (final NonUniqueResultException e)
+		{
+			LOGGER.warn("Multiple datasets for fileid {} found.", tag.getFileId());
+
+			result = null;
+		}
 
 		return result;
 	}
