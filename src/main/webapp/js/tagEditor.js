@@ -212,7 +212,7 @@ function persistTagValue(type) {
 
 		$.ajax({
 			url : "http://localhost:8080/ariadne/service/tag",
-			type : "POST",
+			type : "PUT",
 			contentType : "application/json",
 			data : JSON.stringify(requestData),
 			success : function($data) {
