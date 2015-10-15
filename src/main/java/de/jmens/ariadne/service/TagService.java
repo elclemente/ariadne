@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.persistence.tag.TagDao;
-import de.jmens.ariadne.tag.Tag;
+import de.jmens.ariadne.tag.SoundFile;
 import de.jmens.ariadne.tag.TagEntity;
 
 @Path("/tag")
@@ -25,7 +25,7 @@ public class TagService
 	@PUT
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response change(Tag tag)
+	public Response change(SoundFile tag)
 	{
 		LOGGER.info("Got: {}", tag);
 

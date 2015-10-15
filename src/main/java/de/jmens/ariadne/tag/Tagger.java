@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 import de.jmens.ariadne.exception.CannotLoadFileException;
 import de.jmens.ariadne.exception.CannotWriteTagsException;
@@ -16,7 +18,7 @@ import de.jmens.ariadne.exception.CannotWriteTagsException;
 public class Tagger
 {
 	private Mp3File mp3File;
-	private Tag tag;
+	private SoundFile tag;
 
 	Tagger()
 	{
@@ -29,15 +31,15 @@ public class Tagger
 		{
 			mp3File = new Mp3File(path.toFile());
 
-			this.tag = Tag.of(mp3File);
+			this.tag = SoundFile.of(mp3File);
 		}
-		catch (final Exception e)
+		catch (final IOException | UnsupportedTagException | InvalidDataException e)
 		{
 			throw new CannotLoadFileException(e);
 		}
 	}
 
-	public Tag getTag()
+	public SoundFile getTag()
 	{
 		return tag;
 	}
@@ -49,6 +51,11 @@ public class Tagger
 
 	public static Optional<Tagger> load(Path testfile)
 	{
+		if (testfile == null)
+		{
+			return Optional.empty();
+		}
+
 		try
 		{
 			return Optional.of(new Tagger(testfile));

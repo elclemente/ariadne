@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.service.Filter;
-import de.jmens.ariadne.tag.Tag;
+import de.jmens.ariadne.tag.SoundFile;
 import de.jmens.ariadne.tag.TagEntity;
 
 @Stateless
@@ -87,7 +87,7 @@ public class TagDao
 		return result;
 	}
 
-	public TagEntity findMatching(Tag tag)
+	public TagEntity findMatching(SoundFile tag)
 	{
 		final String hql = "select t from TagEntity t where t.fileId = :fileId";
 

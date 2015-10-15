@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import de.jmens.ariadne.persistence.ScanDao;
 import de.jmens.ariadne.persistence.tag.TagDao;
 import de.jmens.ariadne.tag.ScanEntity;
-import de.jmens.ariadne.tag.Tag;
+import de.jmens.ariadne.tag.SoundFile;
 import de.jmens.ariadne.tag.Tagger;
 
 @Stateless
@@ -71,7 +71,7 @@ public class Importer
 
 	private void updateTags(Tagger tagger, UUID scanId)
 	{
-		final Tag tag = tagger.getTag();
+		final SoundFile tag = tagger.getTag();
 
 		tag.setScanId(scanId);
 		tag.setPath(tagger.getFilepath());
