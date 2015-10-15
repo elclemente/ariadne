@@ -1,5 +1,7 @@
 package de.jmens.ariadne.tag;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 import java.io.File;
@@ -71,6 +73,46 @@ public class SoundFile
 	public void setChanges(Tag changes)
 	{
 		this.changes = changes;
+	}
+
+	public String getEffectiveAlbum()
+	{
+		return defaultString(changes.getAlbum(), tags.getAlbum());
+	}
+
+	public String getEffectiveArtist()
+	{
+		return defaultString(changes.getArtist(), tags.getArtist());
+	}
+
+	public String getEffectiveTitle()
+	{
+		return defaultString(changes.getTitle(), tags.getTitle());
+	}
+
+	public String getEffectiveGenre()
+	{
+		return defaultString(changes.getGenre(), tags.getGenre());
+	}
+
+	public String getEffectiveTrack()
+	{
+		return defaultString(changes.getTrack(), tags.getTrack());
+	}
+
+	public String getEffectiveYear()
+	{
+		return defaultString(changes.getYear(), tags.getYear());
+	}
+
+	public String getEffectiveMimeType()
+	{
+		return defaultString(changes.getMimeType(), tags.getMimeType());
+	}
+
+	public byte[] getEffectiveImage()
+	{
+		return defaultIfNull(changes.getImage(), tags.getImage());
 	}
 
 	public ID3v2 toFileTag()
