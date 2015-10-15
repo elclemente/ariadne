@@ -152,6 +152,15 @@ public class SoundFile
 		result.setMimeType(tags.getMimeType());
 		result.setTrack(tags.getTrack());
 		result.setYear(tags.getYear());
+		result.setPath(getPath());
+		result.setUncommittedAlbum(changes.getAlbum());
+		result.setUncommittedArtist(changes.getArtist());
+		result.setUncommittedTitle(changes.getTitle());
+		result.setUncommittedGenre(changes.getGenre());
+		result.setUncommittedImage(changes.getImage());
+		result.setUncommittedMimeType(changes.getMimeType());
+		result.setUncommittedTrack(changes.getTrack());
+		result.setUncommittedYear(changes.getYear());
 
 		return result;
 

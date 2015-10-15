@@ -19,6 +19,8 @@ create table tag (
         uncommitted_title varchar(255),
         uncommitted_track varchar(255),
         uncommitted_year varchar(255),
+        uncommitted_mimetype varchar(255),
+        uncommitted_image blob,
         primary key (id)
 );
 

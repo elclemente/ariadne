@@ -77,8 +77,16 @@ public class TagEntity
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] image;
 
+	@Lob
+	@Column(name = "uncommitted_image")
+	@Basic(fetch = FetchType.LAZY)
+	private byte[] uncommittedImage;
+
 	@Column(name = "mimetype")
 	private String mimeType;
+
+	@Column(name = "uncommitted_mimetype")
+	private String uncommittedMimeType;
 
 	@Column(name = "path")
 	@Convert(converter = PathConverter.class)
@@ -263,6 +271,26 @@ public class TagEntity
 	public void setUncommittedGenre(String uncommittedGenre)
 	{
 		this.uncommittedGenre = uncommittedGenre;
+	}
+
+	public byte[] getUncommittedImage()
+	{
+		return uncommittedImage;
+	}
+
+	public void setUncommittedImage(byte[] uncommittedImage)
+	{
+		this.uncommittedImage = uncommittedImage;
+	}
+
+	public String getUncommittedMimeType()
+	{
+		return uncommittedMimeType;
+	}
+
+	public void setUncommittedMimeType(String uncommittedMimeType)
+	{
+		this.uncommittedMimeType = uncommittedMimeType;
 	}
 
 	@Override

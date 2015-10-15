@@ -40,22 +40,22 @@ public class TagService
 
 		if (tag.getTags().getArtist() != null)
 		{
-			entity.setArtist(tag.getTags().getArtist());
+			entity.setUncommittedArtist(tag.getTags().getArtist());
 		}
 
 		if (tag.getTags().getAlbum() != null)
 		{
-			entity.setAlbum(tag.getTags().getAlbum());
+			entity.setUncommittedAlbum(tag.getTags().getAlbum());
 		}
 
 		if (tag.getTags().getTitle() != null)
 		{
-			entity.setTitle(tag.getTags().getTitle());
+			entity.setUncommittedTitle(tag.getTags().getTitle());
 		}
 
 		if (tag.getTags().getGenre() != null)
 		{
-			entity.setGenre(tag.getTags().getGenre());
+			entity.setUncommittedGenre(tag.getTags().getGenre());
 		}
 
 		if (tag.getTags().getMimeType() != null)
@@ -70,12 +70,12 @@ public class TagService
 
 		if (tag.getTags().getYear() != null)
 		{
-			entity.setYear(tag.getTags().getYear());
+			entity.setUncommittedYear(tag.getTags().getYear());
 		}
 
 		if (tag.getTags().getTrack() != null)
 		{
-			entity.setTrack(tag.getTags().getTrack());
+			entity.setUncommittedTrack(tag.getTags().getTrack());
 		}
 
 		tagDao.saveOrUpdate(entity);
