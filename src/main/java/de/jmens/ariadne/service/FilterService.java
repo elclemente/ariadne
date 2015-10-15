@@ -1,5 +1,6 @@
 package de.jmens.ariadne.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jmens.ariadne.persistence.tag.TagDao;
+import de.jmens.ariadne.tag.SoundFile;
 import de.jmens.ariadne.tag.TagEntity;
 
 @Path("filter")
@@ -30,7 +32,13 @@ public class FilterService
 	{
 		final List<TagEntity> tags = tagDao.findTags(filter);
 
-		return Response.ok().entity(tags).build();
+		final List<SoundFile> result = new ArrayList<>();
+		for (final TagEntity entity : tags)
+		{
+			result.add(SoundFile.of(entity));
+		}
+
+		return Response.ok().entity(result).build();
 	}
 
 }

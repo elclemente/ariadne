@@ -39,7 +39,7 @@ public class Tagger
 		}
 	}
 
-	public SoundFile getTag()
+	public SoundFile getSoundFile()
 	{
 		return tag;
 	}

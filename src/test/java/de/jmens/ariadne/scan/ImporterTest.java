@@ -76,12 +76,12 @@ public class ImporterTest extends DbTest
 
 		final Tagger tagger = Tagger.load(root.resolve(FILE_1_1_1)).get();
 
-		assertThat(tagger.getTag().getScanId(), not(nullValue()));
+		assertThat(tagger.getSoundFile().getScanId(), not(nullValue()));
 
-		final UUID fileid1 = Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId();
-		final UUID fileid2 = Tagger.load(root.resolve(FILE_1_1_2)).get().getTag().getFileId();
-		final UUID scanid1 = Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId();
-		final UUID scanid2 = Tagger.load(root.resolve(FILE_1_1_2)).get().getTag().getScanId();
+		final UUID fileid1 = Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getFileId();
+		final UUID fileid2 = Tagger.load(root.resolve(FILE_1_1_2)).get().getSoundFile().getFileId();
+		final UUID scanid1 = Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getScanId();
+		final UUID scanid2 = Tagger.load(root.resolve(FILE_1_1_2)).get().getSoundFile().getScanId();
 
 		assertThat(fileid1, not(is(fileid2)));
 		assertThat(scanid1, is(scanid2));
@@ -94,7 +94,7 @@ public class ImporterTest extends DbTest
 
 		final UUID expectedFileid = UUID.randomUUID();
 
-		tagger.getTag().setFileId(expectedFileid);
+		tagger.getSoundFile().setFileId(expectedFileid);
 		tagger.writeTags();
 
 		final ScanEntity scan = new ScanEntity();
@@ -104,13 +104,13 @@ public class ImporterTest extends DbTest
 
 		importer.scan(root);
 
-		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), is(expectedFileid));
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getFileId(), is(expectedFileid));
 	}
 
 	@Test
 	public void testUpdateMissingFileid() throws Exception
 	{
-		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), nullValue());
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getFileId(), nullValue());
 
 		final ScanEntity newScan = new ScanEntity();
 		newScan.setScanId(UUID.randomUUID());
@@ -119,8 +119,8 @@ public class ImporterTest extends DbTest
 
 		final ScanEntity scan = importer.scan(root);
 
-		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getFileId(), not(nullValue()));
-		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getTag().getScanId(), is(scan.getScanId()));
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getFileId(), not(nullValue()));
+		assertThat(Tagger.load(root.resolve(FILE_1_1_1)).get().getSoundFile().getScanId(), is(scan.getScanId()));
 	}
 
 	@Test

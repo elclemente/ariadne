@@ -20,87 +20,8 @@ public class SoundFile
 	private UUID fileId;
 	private UUID scanId;
 	private File path;
-	private final Tag tags = new Tag();
-
-	public String getArtist()
-	{
-		return tags.getArtist();
-	}
-
-	public void setArtist(String artist)
-	{
-		tags.setArtist(artist);
-	}
-
-	public String getAlbum()
-	{
-		return tags.getAlbum();
-	}
-
-	public void setAlbum(String album)
-	{
-		tags.setAlbum(album);
-	}
-
-	public String getTitle()
-	{
-		return tags.getTitle();
-	}
-
-	public void setTitle(String title)
-	{
-		tags.setTitle(title);
-	}
-
-	public String getGenre()
-	{
-		return tags.getGenre();
-	}
-
-	public void setGenre(String genre)
-	{
-		tags.setGenre(genre);
-	}
-
-	public String getYear()
-	{
-		return tags.getYear();
-	}
-
-	public void setYear(String year)
-	{
-		tags.setYear(year);
-	}
-
-	public String getTrack()
-	{
-		return tags.getTrack();
-	}
-
-	public void setTrack(String track)
-	{
-		tags.setTrack(track);
-	}
-
-	public byte[] getImage()
-	{
-		return tags.getImage();
-	}
-
-	public void setImage(byte[] image)
-	{
-		tags.setImage(image);
-	}
-
-	public String getMimeType()
-	{
-		return tags.getMimeType();
-	}
-
-	public void setMimeType(String mimeType)
-	{
-		tags.setMimeType(mimeType);
-	}
+	private Tag tags = new Tag();
+	private Tag changes = new Tag();
 
 	public UUID getFileId()
 	{
@@ -132,17 +53,37 @@ public class SoundFile
 		this.path = path;
 	}
 
+	public Tag getTags()
+	{
+		return tags;
+	}
+
+	public void setTags(Tag tags)
+	{
+		this.tags = tags;
+	}
+
+	public Tag getChanges()
+	{
+		return changes;
+	}
+
+	public void setChanges(Tag changes)
+	{
+		this.changes = changes;
+	}
+
 	public ID3v2 toFileTag()
 	{
 		final ID3v24Tag result = new ID3v24Tag();
 
-		result.setAlbum(getAlbum());
-		result.setArtist(getArtist());
-		result.setGenreDescription(getGenre());
-		result.setTitle(getTitle());
-		result.setTrack(getTrack());
-		result.setYear(getYear());
-		result.setTrack(getTrack());
+		result.setAlbum(tags.getAlbum());
+		result.setArtist(tags.getArtist());
+		result.setGenreDescription(tags.getGenre());
+		result.setTitle(tags.getTitle());
+		result.setTrack(tags.getTrack());
+		result.setYear(tags.getYear());
+		result.setTrack(tags.getTrack());
 		result.setKey(getFileId().toString());
 
 		if (getScanId() != null)
@@ -150,7 +91,7 @@ public class SoundFile
 			result.setComment(getScanId().toString());
 		}
 
-		result.setAlbumImage(getImage(), getMimeType());
+		result.setAlbumImage(tags.getImage(), tags.getMimeType());
 
 		return result;
 	}
@@ -159,16 +100,16 @@ public class SoundFile
 	{
 		final TagEntity result = new TagEntity();
 
-		result.setArtist(getArtist());
-		result.setAlbum(getAlbum());
+		result.setArtist(tags.getArtist());
+		result.setAlbum(tags.getAlbum());
 		result.setFileId(getFileId());
 		result.setScanId(getScanId());
-		result.setTitle(getTitle());
-		result.setGenre(getGenre());
-		result.setImage(getImage());
-		result.setMimeType(getMimeType());
-		result.setTrack(getTrack());
-		result.setYear(getYear());
+		result.setTitle(tags.getTitle());
+		result.setGenre(tags.getGenre());
+		result.setImage(tags.getImage());
+		result.setMimeType(tags.getMimeType());
+		result.setTrack(tags.getTrack());
+		result.setYear(tags.getYear());
 
 		return result;
 
@@ -199,17 +140,17 @@ public class SoundFile
 	public static SoundFile of(ID3v1 tag)
 	{
 		final SoundFile result = new SoundFile();
-		result.setAlbum(trimToEmpty(tag.getAlbum()));
-		result.setArtist(trimToEmpty(tag.getArtist()));
-		result.setGenre(tag.getGenreDescription());
-		result.setTitle(trimToEmpty(tag.getTitle()));
-		result.setTrack(trimToEmpty(tag.getTrack()));
-		result.setYear(trimToEmpty(tag.getYear()));
+		result.tags.setAlbum(trimToEmpty(tag.getAlbum()));
+		result.tags.setArtist(trimToEmpty(tag.getArtist()));
+		result.tags.setGenre(tag.getGenreDescription());
+		result.tags.setTitle(trimToEmpty(tag.getTitle()));
+		result.tags.setTrack(trimToEmpty(tag.getTrack()));
+		result.tags.setYear(trimToEmpty(tag.getYear()));
 
 		if (tag instanceof ID3v2)
 		{
-			result.setMimeType(((ID3v2) tag).getAlbumImageMimeType());
-			result.setImage(((ID3v2) tag).getAlbumImage());
+			result.tags.setMimeType(((ID3v2) tag).getAlbumImageMimeType());
+			result.tags.setImage(((ID3v2) tag).getAlbumImage());
 			result.setFileId(uuidFrom(((ID3v2) tag).getKey()));
 			result.setScanId(uuidFrom(((ID3v2) tag).getComment()));
 		}
@@ -255,5 +196,18 @@ public class SoundFile
 	public boolean equals(Object that)
 	{
 		return EqualsBuilder.reflectionEquals(this, that);
+	}
+
+	public static SoundFile of(TagEntity entity)
+	{
+		final SoundFile file = new SoundFile();
+		final Tag tags = Tag.of(entity);
+
+		file.setTags(tags);
+		file.setFileId(entity.getFileId());
+		file.setPath(entity.getPath());
+		file.setScanId(entity.getScanId());
+
+		return file;
 	}
 }

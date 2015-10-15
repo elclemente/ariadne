@@ -38,44 +38,44 @@ public class TagService
 			return Response.noContent().build();
 		}
 
-		if (tag.getArtist() != null)
+		if (tag.getTags().getArtist() != null)
 		{
-			entity.setArtist(tag.getArtist());
+			entity.setArtist(tag.getTags().getArtist());
 		}
 
-		if (tag.getAlbum() != null)
+		if (tag.getTags().getAlbum() != null)
 		{
-			entity.setAlbum(tag.getAlbum());
+			entity.setAlbum(tag.getTags().getAlbum());
 		}
 
-		if (tag.getTitle() != null)
+		if (tag.getTags().getTitle() != null)
 		{
-			entity.setTitle(tag.getTitle());
+			entity.setTitle(tag.getTags().getTitle());
 		}
 
-		if (tag.getGenre() != null)
+		if (tag.getTags().getGenre() != null)
 		{
-			entity.setGenre(tag.getGenre());
+			entity.setGenre(tag.getTags().getGenre());
 		}
 
-		if (tag.getMimeType() != null)
+		if (tag.getTags().getMimeType() != null)
 		{
-			entity.setMimeType(tag.getMimeType());
+			entity.setMimeType(tag.getTags().getMimeType());
 		}
 
-		if (tag.getImage() != null)
+		if (tag.getTags().getImage() != null)
 		{
-			entity.setImage(tag.getImage());
+			entity.setImage(tag.getTags().getImage());
 		}
 
-		if (tag.getYear() != null)
+		if (tag.getTags().getYear() != null)
 		{
-			entity.setYear(tag.getYear());
+			entity.setYear(tag.getTags().getYear());
 		}
 
-		if (tag.getTrack() != null)
+		if (tag.getTags().getTrack() != null)
 		{
-			entity.setTrack(tag.getTrack());
+			entity.setTrack(tag.getTags().getTrack());
 		}
 
 		tagDao.saveOrUpdate(entity);

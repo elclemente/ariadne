@@ -43,27 +43,27 @@ public class TaggerTest extends FileTest
 	@Test
 	public void testLoadV1Tags() throws Exception
 	{
-		final SoundFile tag = Tagger.load(testfileV1).get().getTag();
+		final SoundFile soundFile = Tagger.load(testfileV1).get().getSoundFile();
 
-		assertThat(tag.getAlbum(), is("For the weak"));
-		assertThat(tag.getArtist(), is("Decay"));
-		assertThat(tag.getGenre(), is("Blues"));
-		assertThat(tag.getTitle(), is("Foul Friend"));
-		assertThat(tag.getTrack(), is("2"));
-		assertThat(tag.getYear(), is("2000"));
+		assertThat(soundFile.getTags().getAlbum(), is("For the weak"));
+		assertThat(soundFile.getTags().getArtist(), is("Decay"));
+		assertThat(soundFile.getTags().getGenre(), is("Blues"));
+		assertThat(soundFile.getTags().getTitle(), is("Foul Friend"));
+		assertThat(soundFile.getTags().getTrack(), is("2"));
+		assertThat(soundFile.getTags().getYear(), is("2000"));
 	}
 
 	@Test
 	public void testLoadV2Tags() throws Exception
 	{
-		final SoundFile tag = Tagger.load(testfileV2).get().getTag();
+		final SoundFile soundFile = Tagger.load(testfileV2).get().getSoundFile();
 
-		assertThat(tag.getAlbum(), is("For the weak"));
-		assertThat(tag.getArtist(), is("Decay"));
-		assertThat(tag.getGenre(), is("Blues"));
-		assertThat(tag.getTitle(), is("Foul Friend"));
-		assertThat(tag.getTrack(), is("2"));
-		assertThat(tag.getYear(), is("2000"));
+		assertThat(soundFile.getTags().getAlbum(), is("For the weak"));
+		assertThat(soundFile.getTags().getArtist(), is("Decay"));
+		assertThat(soundFile.getTags().getGenre(), is("Blues"));
+		assertThat(soundFile.getTags().getTitle(), is("Foul Friend"));
+		assertThat(soundFile.getTags().getTrack(), is("2"));
+		assertThat(soundFile.getTags().getYear(), is("2000"));
 	}
 
 	@Test
@@ -71,30 +71,30 @@ public class TaggerTest extends FileTest
 	{
 		final Tagger tagger = Tagger.load(testfileV1).get();
 
-		final SoundFile tag = tagger.getTag();
+		final SoundFile soundFile = tagger.getSoundFile();
 
 		final UUID fileId = UUID.randomUUID();
 		final UUID scanId = UUID.randomUUID();
 
-		tag.setAlbum("album");
-		tag.setArtist("artist");
-		tag.setGenre("Doom");
-		tag.setTitle("title");
-		tag.setTrack("track");
-		tag.setYear("3000");
-		tag.setFileId(fileId);
-		tag.setScanId(scanId);
+		soundFile.getTags().setAlbum("album");
+		soundFile.getTags().setArtist("artist");
+		soundFile.getTags().setGenre("Doom");
+		soundFile.getTags().setTitle("title");
+		soundFile.getTags().setTrack("track");
+		soundFile.getTags().setYear("3000");
+		soundFile.setFileId(fileId);
+		soundFile.setScanId(scanId);
 
 		tagger.writeTags();
 
-		final SoundFile result = Tagger.load(testfileV1).get().getTag();
+		final SoundFile result = Tagger.load(testfileV1).get().getSoundFile();
 
-		assertThat(result.getAlbum(), is("album"));
-		assertThat(result.getArtist(), is("artist"));
-		assertThat(result.getGenre(), is("Doom"));
-		assertThat(result.getTitle(), is("title"));
-		assertThat(result.getTrack(), is("track"));
-		assertThat(result.getYear(), is("3000"));
+		assertThat(result.getTags().getAlbum(), is("album"));
+		assertThat(result.getTags().getArtist(), is("artist"));
+		assertThat(result.getTags().getGenre(), is("Doom"));
+		assertThat(result.getTags().getTitle(), is("title"));
+		assertThat(result.getTags().getTrack(), is("track"));
+		assertThat(result.getTags().getYear(), is("3000"));
 		assertThat(result.getScanId(), is(scanId));
 		assertThat(result.getFileId(), is(fileId));
 	}
@@ -108,7 +108,7 @@ public class TaggerTest extends FileTest
 		perms.add(PosixFilePermission.OTHERS_READ);
 
 		final Tagger tagger = Tagger.load(testfileV2).get();
-		tagger.getTag().setAlbum("foo");
+		tagger.getSoundFile().getTags().setAlbum("foo");
 
 		Files.setPosixFilePermissions(testfileV2, new HashSet<PosixFilePermission>());
 		assertThat(testfileV2.toFile().canWrite(), is(false));
@@ -116,6 +116,6 @@ public class TaggerTest extends FileTest
 		assertThat(tagger.writeTags(), is(false));
 
 		Files.setPosixFilePermissions(testfileV2, perms);
-		assertThat(Tagger.load(testfileV2).get().getTag().getAlbum(), is("For the weak"));
+		assertThat(Tagger.load(testfileV2).get().getSoundFile().getTags().getAlbum(), is("For the weak"));
 	}
 }

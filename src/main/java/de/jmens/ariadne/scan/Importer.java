@@ -71,7 +71,7 @@ public class Importer
 
 	private void updateTags(Tagger tagger, UUID scanId)
 	{
-		final SoundFile tag = tagger.getTag();
+		final SoundFile tag = tagger.getSoundFile();
 
 		tag.setScanId(scanId);
 		tag.setPath(tagger.getFilepath());

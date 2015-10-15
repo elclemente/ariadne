@@ -1,6 +1,6 @@
 package de.jmens.ariadne.tag;
 
-class Tag
+public class Tag
 {
 	private String artist;
 	private String album;
@@ -89,5 +89,21 @@ class Tag
 	public void setMimeType(String mimeType)
 	{
 		this.mimeType = mimeType;
+	}
+
+	public static Tag of(TagEntity entity)
+	{
+		final Tag tag = new Tag();
+
+		tag.setAlbum(entity.getAlbum());
+		tag.setArtist(entity.getArtist());
+		tag.setTitle(entity.getTitle());
+		tag.setGenre(entity.getGenre());
+		tag.setYear(entity.getYear());
+		tag.setTrack(entity.getTrack());
+		tag.setImage(entity.getImage());
+		tag.setMimeType(entity.getMimeType());
+
+		return tag;
 	}
 }

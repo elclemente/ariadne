@@ -208,7 +208,8 @@ function persistTagValue(type) {
 		var requestData = {};
 
 		requestData['fileId'] = id;
-		requestData[field] = value;
+		requestData['tags'] = {}; 
+		requestData['tags'][field] = value;
 
 		$.ajax({
 			url : "http://localhost:8080/ariadne/service/tag",
@@ -271,12 +272,12 @@ function initializeSelectedFiles() {
 		var idSelected = selected.get(i).value;
 		var selectedFile = ariadne.files[idSelected];
 
-		add(artists, selectedFile.artist);
-		add(titles, selectedFile.title);
-		add(albums, selectedFile.album);
-		add(genres, selectedFile.genre);
-		add(years, selectedFile.year);
-		add(tracks, selectedFile.track);
+		add(artists, selectedFile.tags.artist);
+		add(titles, selectedFile.tags.title);
+		add(albums, selectedFile.tags.album);
+		add(genres, selectedFile.tags.genre);
+		add(years, selectedFile.tags.year);
+		add(tracks, selectedFile.tags.track);
 		add(ids, idSelected);
 	}
 
