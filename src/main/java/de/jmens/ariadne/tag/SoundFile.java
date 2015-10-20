@@ -75,42 +75,42 @@ public class SoundFile
 		this.changes = changes;
 	}
 
-	public String getEffectiveAlbum()
+	public String getAlbum()
 	{
 		return defaultString(changes.getAlbum(), tags.getAlbum());
 	}
 
-	public String getEffectiveArtist()
+	public String getArtist()
 	{
 		return defaultString(changes.getArtist(), tags.getArtist());
 	}
 
-	public String getEffectiveTitle()
+	public String getTitle()
 	{
 		return defaultString(changes.getTitle(), tags.getTitle());
 	}
 
-	public String getEffectiveGenre()
+	public String getGenre()
 	{
 		return defaultString(changes.getGenre(), tags.getGenre());
 	}
 
-	public String getEffectiveTrack()
+	public String getTrack()
 	{
 		return defaultString(changes.getTrack(), tags.getTrack());
 	}
 
-	public String getEffectiveYear()
+	public String getYear()
 	{
 		return defaultString(changes.getYear(), tags.getYear());
 	}
 
-	public String getEffectiveMimeType()
+	public String getMimeType()
 	{
 		return defaultString(changes.getMimeType(), tags.getMimeType());
 	}
 
-	public byte[] getEffectiveImage()
+	public byte[] getImage()
 	{
 		return defaultIfNull(changes.getImage(), tags.getImage());
 	}

@@ -208,7 +208,7 @@ function persistTagValue(type) {
 		var requestData = {};
 
 		requestData['fileId'] = id;
-		requestData['tags'] = {}; 
+		requestData['tags'] = {};
 		requestData['tags'][field] = value;
 
 		$.ajax({
@@ -217,7 +217,7 @@ function persistTagValue(type) {
 			contentType : "application/json",
 			data : JSON.stringify(requestData),
 			success : function($data) {
-				ariadne.files[id]['tags'][field] = value;
+				ariadne.files[id]['changes'][field] = value;
 				updateTagEditor();
 			},
 			error : function($data) {
@@ -260,25 +260,31 @@ function initializeSelectedFiles() {
 	var tracks = {};
 	var ids = {};
 
-	function add(set, element) {
-		if (set[element] == null) {
-			set[element] = 1;
+	function add(set, element, override) {
+		
+		var effective = element;
+		if (override != null) {
+			effective = override
+		}
+		
+		if (set[effective] == null) {
+			set[effective] = 1;
 			return;
 		}
 
-		set[element] += 1;
+		set[effective] += 1;
 	}
 
 	for (i = 0; i < dim; i++) {
 		var idSelected = selected.get(i).value;
 		var selectedFile = ariadne.files[idSelected];
 
-		add(artists, selectedFile.tags.artist);
-		add(titles, selectedFile.tags.title);
-		add(albums, selectedFile.tags.album);
-		add(genres, selectedFile.tags.genre);
-		add(years, selectedFile.tags.year);
-		add(tracks, selectedFile.tags.track);
+		add(artists, selectedFile.tags.artist, selectedFile.changes.artist);
+		add(titles, selectedFile.tags.title, selectedFile.changes.title);
+		add(albums, selectedFile.tags.album, selectedFile.changes.album);
+		add(genres, selectedFile.tags.genre, selectedFile.changes.genre);
+		add(years, selectedFile.tags.year, selectedFile.changes.year);
+		add(tracks, selectedFile.tags.track, selectedFile.changes.track);
 		add(ids, idSelected);
 	}
 
