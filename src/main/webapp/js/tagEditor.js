@@ -217,7 +217,8 @@ function persistTagValue(type) {
 			contentType : "application/json",
 			data : JSON.stringify(requestData),
 			success : function($data) {
-				console.log("Tag updated");
+				ariadne.files[id]['tags'][field] = value;
+				updateTagEditor();
 			},
 			error : function($data) {
 				console.log("Cannot update tag");
