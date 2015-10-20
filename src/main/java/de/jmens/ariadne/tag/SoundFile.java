@@ -252,9 +252,11 @@ public class SoundFile
 	public static SoundFile of(TagEntity entity)
 	{
 		final SoundFile file = new SoundFile();
-		final Tag tags = Tag.of(entity);
+		final Tag tags = Tag.ofValues(entity);
+		final Tag changes = Tag.ofChangedValues(entity);
 
 		file.setTags(tags);
+		file.setChanges(changes);
 		file.setFileId(entity.getFileId());
 		file.setPath(entity.getPath());
 		file.setScanId(entity.getScanId());

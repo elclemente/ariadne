@@ -91,7 +91,7 @@ public class Tag
 		this.mimeType = mimeType;
 	}
 
-	public static Tag of(TagEntity entity)
+	public static Tag ofValues(TagEntity entity)
 	{
 		final Tag tag = new Tag();
 
@@ -103,6 +103,22 @@ public class Tag
 		tag.setTrack(entity.getTrack());
 		tag.setImage(entity.getImage());
 		tag.setMimeType(entity.getMimeType());
+
+		return tag;
+	}
+
+	public static Tag ofChangedValues(TagEntity entity)
+	{
+		final Tag tag = new Tag();
+
+		tag.setAlbum(entity.getUncommittedAlbum());
+		tag.setArtist(entity.getUncommittedArtist());
+		tag.setTitle(entity.getUncommittedTitle());
+		tag.setGenre(entity.getUncommittedGenre());
+		tag.setYear(entity.getUncommittedYear());
+		tag.setTrack(entity.getUncommittedTrack());
+		tag.setImage(entity.getUncommittedImage());
+		tag.setMimeType(entity.getUncommittedMimeType());
 
 		return tag;
 	}
