@@ -215,10 +215,12 @@ function persistTagValue(type) {
 			url : "http://localhost:8080/ariadne/service/tag",
 			type : "PUT",
 			id : id,
+			field: field, 
+			value: value,
 			contentType : "application/json",
 			data : JSON.stringify(requestData),
 			success : function($data) {
-				ariadne.files[this.id]['changes'][field] = value;
+				ariadne.files[this.id]['changes'][this.field] = this.value;
 				updateTagEditor();
 			},
 			error : function($data) {
