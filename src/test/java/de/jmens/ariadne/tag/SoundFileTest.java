@@ -22,11 +22,11 @@ public class SoundFileTest
 
 		assertThat(file.getTags().getAlbum(), is("foo"));
 		assertThat(file.getChanges().getAlbum(), is("unfoo"));
-		assertThat(file.getEffectiveAlbum(), is("unfoo"));
+		assertThat(file.getAlbum(), is("unfoo"));
 
 		assertThat(file.getTags().getArtist(), is("bar"));
 		assertThat(file.getChanges().getArtist(), nullValue());
-		assertThat(file.getEffectiveArtist(), is("bar"));
+		assertThat(file.getArtist(), is("bar"));
 	}
 
 }
