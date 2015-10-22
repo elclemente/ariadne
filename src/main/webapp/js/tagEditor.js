@@ -161,12 +161,17 @@ function updateTagEditor() {
 
 function updateTagInputgroup(type) {
 	var selected = ariadne.selectedFiles[type];
+	var id = Object.keys(ariadne.selectedFiles.id)[0];
+	var changed = isUncommittedChange( id, type );
 
+	console.log("Changed: " + type + " - " + JSON.stringify(changed));
+	
 	var context = {
 		'selected' : selected,
 		'value' : Object.keys(selected)[0],
 		'type' : type,
-		'caption' : type
+		'caption' : type, 
+		'changed' : changed
 	}
 
 	var value = Object.keys(selected)[0];
@@ -174,15 +179,15 @@ function updateTagInputgroup(type) {
 	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
 	$('#input_' + type).val(value);
 
-	updateTageditorBadge(type);
+	updateTageditorDecorations(type);
 }
 
 function updateTageditorInput(type, value) {
 	$("#input_" + type).val(value);
-	updateTageditorBadge(type);
+	updateTageditorDecorations(type);
 }
 
-function updateTageditorBadge(type) {
+function updateTageditorDecorations(type) {
 	var selected = ariadne.selectedFiles[type];
 	var value = $("#input_" + type).val();
 
@@ -196,8 +201,23 @@ function updateTageditorBadge(type) {
 	$("#badge_" + type).text(affectedFiles);
 }
 
+function isUncommittedChange( id, type) {
+	var id = Object.keys(ariadne.selectedFiles.id)[0];
+	var originalValue = ariadne.files[id].tags[type];
+	var currentValue = ariadne.files[id].changes[type];
+	var changed = false; 
+	if ((currentValue != null) && (currentValue != originalValue)) {
+		changed = true;
+	}
+	return {
+		changed: changed, 
+		original: originalValue, 
+		current: currentValue
+	}
+}
+
 function tageditorChanged(type) {
-	updateTageditorBadge(type)
+	updateTageditorDecorations(type)
 }
 
 function persistTagValue(type) {
