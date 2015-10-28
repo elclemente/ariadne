@@ -11,7 +11,7 @@ Handlebars.registerHelper('list', function(items, options) {
 		});
 		// var handler = '$(\'#input_' + this.type + '\').val(\'' + value
 		// + '\');';
-		var handler = "updateTageditorInput('" + this.type + "', '" + value
+		var handler = "dropDownSelectionHandler('" + this.type + "', '" + value
 				+ "');";
 		out = out + '<li><a onclick="' + handler + '">' + value + "</a></li>";
 	}
@@ -26,7 +26,7 @@ $(document).ready(
 			});
 			ariadne.templates.tageditorControls = Handlebars.compile($(
 					"#tageditor-controls-template").html());
-			updateTagEditor();
+			selectedFileChangedHandler();
 		});
 
 function startScanner() {
@@ -127,10 +127,14 @@ function applyFilter(filter) {
 	});
 }
 
-function updateTagEditor() {
+/**
+ * HTML-Handler implementation 
+ * 
+ * Called whenever the selection state of the File-select changes. 
+ */
+function selectedFileChangedHandler() {
+	
 	initializeSelectedFiles();
-
-	var type = "artist";
 
 	updateTagInputgroup('artist');
 	updateTagInputgroup('album');
@@ -139,14 +143,13 @@ function updateTagEditor() {
 	updateTagInputgroup('year');
 	updateTagInputgroup('track');
 
-	var text = '';
+	$('#tageditor_input_file').val(ariadne.selectedFiles.mainFile);
+	
 	var fileCount = ariadne.selectedFiles.count;
-
-	text += ariadne.selectedFiles.mainFile + '&nbsp;';
+	var text = '' + ariadne.selectedFiles.mainFile + '&nbsp;';
 	if (fileCount > 1) {
 		text += "(" + fileCount + " files total)";
 	}
-
 	$("#selectedFileDiv").html(text);
 
 	if (typeof ariadne.selectedFiles.image === 'undefined') {
@@ -159,34 +162,55 @@ function updateTagEditor() {
 	}
 }
 
+/**
+ * CSS Handler: Called if a value in the selected-values-dropwown is selected
+ **/
+function dropDownSelectionHandler(type, value) {
+	$("#input_" + type).val(value);
+	updateTageditorDecorations(type);
+}
+
+/**
+ * CSS-handler implementation. 
+ * Called whenever the value of a tageditor input changed
+ */
+function tageditorChangedHandler(type) {
+	updateTageditorDecorations(type)
+}
+
 function updateTagInputgroup(type) {
 	var selected = ariadne.selectedFiles[type];
 	var id = Object.keys(ariadne.selectedFiles.id)[0];
-	var changed = isUncommittedChange( id, type );
+	var changed = isUncommittedChange(id, type);
 
-	console.log("Changed: " + type + " - " + JSON.stringify(changed));
-	
 	var context = {
 		'selected' : selected,
 		'value' : Object.keys(selected)[0],
 		'type' : type,
-		'caption' : type, 
+		'caption' : type,
 		'changed' : changed
 	}
 
 	var value = Object.keys(selected)[0];
 
 	$("#tageditor_" + type).html(ariadne.templates.tageditorControls(context))
+
+	if (changed.changed) {
+		$("#input-addon-" + type).addClass('changed');
+	}
+
 	$('#input_' + type).val(value);
 
 	updateTageditorDecorations(type);
 }
 
-function updateTageditorInput(type, value) {
-	$("#input_" + type).val(value);
-	updateTageditorDecorations(type);
-}
 
+/**
+ * Updated tag editor input decorations - 
+ * a drop down menu with all selected values for this input, 
+ * a badge indicating the number of affected files 
+ * and an apply button
+ */
 function updateTageditorDecorations(type) {
 	var selected = ariadne.selectedFiles[type];
 	var value = $("#input_" + type).val();
@@ -201,23 +225,28 @@ function updateTageditorDecorations(type) {
 	$("#badge_" + type).text(affectedFiles);
 }
 
-function isUncommittedChange( id, type) {
+/**
+ * Checks whether an input contains a change that is 
+ * not yet written into the physical file.
+ */
+function isUncommittedChange(id, type) {
 	var id = Object.keys(ariadne.selectedFiles.id)[0];
+
+	if (id == null) {
+		return false;
+	}
+
 	var originalValue = ariadne.files[id].tags[type];
 	var currentValue = ariadne.files[id].changes[type];
-	var changed = false; 
+	var changed = false;
 	if ((currentValue != null) && (currentValue != originalValue)) {
 		changed = true;
 	}
 	return {
-		changed: changed, 
-		original: originalValue, 
-		current: currentValue
+		changed : changed,
+		original : originalValue,
+		current : currentValue
 	}
-}
-
-function tageditorChanged(type) {
-	updateTageditorDecorations(type)
 }
 
 function persistTagValue(type) {
@@ -235,13 +264,13 @@ function persistTagValue(type) {
 			url : "http://localhost:8080/ariadne/service/tag",
 			type : "PUT",
 			id : id,
-			field: field, 
-			value: value,
+			field : field,
+			value : value,
 			contentType : "application/json",
 			data : JSON.stringify(requestData),
 			success : function($data) {
 				ariadne.files[this.id]['changes'][this.field] = this.value;
-				updateTagEditor();
+				selectedFileChangedHandler();
 			},
 			error : function($data) {
 				console.log("Cannot update tag");
@@ -284,12 +313,12 @@ function initializeSelectedFiles() {
 	var ids = {};
 
 	function add(set, element, override) {
-		
+
 		var effective = element;
 		if (override != null) {
 			effective = override
 		}
-		
+
 		if (set[effective] == null) {
 			set[effective] = 1;
 			return;
