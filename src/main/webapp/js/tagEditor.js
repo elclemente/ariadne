@@ -178,6 +178,44 @@ function tageditorChangedHandler(type) {
 	updateTageditorDecorations(type)
 }
 
+/**
+ * onclick-handler: Called when the user clicks the reset button
+ */
+function resetChangesHandler() {
+	resetChanges(getSelectedMainId());
+}
+
+/**
+ * onclick-handler: Called when the user clicks the reset all button
+ */
+function resetAllChangesHandler() {
+	for (id in getSelectedFileIds()) {
+		resetChanges(id);
+	}
+}
+
+function resetChanges(id) {
+	console.log("Resetting " + id);
+	ariadne.files[id]['changes'] = {
+		'artist': null, 
+		'album': null, 
+		'title': null, 
+		'image': null,
+		'track': null,
+		'year': null
+	};
+
+	selectedFileChangedHandler();
+}
+
+function getSelectedMainId() {
+	return Object.keys(ariadne.selectedFiles.id)[0];
+}
+
+function getSelectedFileIds() {
+	return ariadne.selectedFiles.id;
+}
+
 function updateTagInputgroup(type) {
 	var selected = ariadne.selectedFiles[type];
 	var id = Object.keys(ariadne.selectedFiles.id)[0];

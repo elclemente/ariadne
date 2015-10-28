@@ -43,7 +43,7 @@
 	</nav>
 
 	<div class="container">
-		
+
 		<div class="row">
 			<div class="panel panel-default">
 				<div class="panel-body center">
@@ -55,7 +55,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				<select  id="file_list" class="selectpicker form-control" size="35" multiple onclick="selectedFileChangedHandler();"></select>
+				<select id="file_list" class="selectpicker form-control" size="35" multiple onclick="selectedFileChangedHandler();"></select>
 			</div>
 
 			<div class="form-group">
@@ -76,54 +76,62 @@
 						</div>
 						<div class="col-md-6">
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonArtist">Artist</span>
-								<span class="input-group-addon"><input id="filterEnableArtist" type="checkbox" aria-label="..."></span>
-								<input id="filterInputArtist" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonArtist" value="" onchange="updateEnablement('Artist')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonArtist">Artist</span> <span
+									class="input-group-addon"><input id="filterEnableArtist" type="checkbox" aria-label="..."></span> <input
+									id="filterInputArtist" type="text" class="form-control" placeholder=""
+									aria-describedby="filterInputAddonArtist" value="" onchange="updateEnablement('Artist')">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonAlbum">Album</span>
-								<span class="input-group-addon"><input id="filterEnableAlbum" type="checkbox" aria-label="..."></span>
-								<input id="filterInputAlbum" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonAlbum" value="" onchange="updateEnablement('Album')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonAlbum">Album</span> <span
+									class="input-group-addon"><input id="filterEnableAlbum" type="checkbox" aria-label="..."></span> <input
+									id="filterInputAlbum" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonAlbum"
+									value="" onchange="updateEnablement('Album')">
 							</div>
 
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonTitle">Title</span>
-								<span class="input-group-addon"><input id="filterEnableTitle" type="checkbox" aria-label="..."></span>
-								<input id="filterInputTitle" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTitle" value="" onchange="updateEnablement('Title')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonTitle">Title</span> <span
+									class="input-group-addon"><input id="filterEnableTitle" type="checkbox" aria-label="..."></span> <input
+									id="filterInputTitle" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTitle"
+									value="" onchange="updateEnablement('Title')">
 							</div>
 
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonGenre">Genre</span>
-								<span class="input-group-addon"><input id="filterEnableGenre" type="checkbox" aria-label="..."></span>
-								<input id="filterInputGenre" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonGenre" value="" onchange="updateEnablement('Genre')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonGenre">Genre</span> <span
+									class="input-group-addon"><input id="filterEnableGenre" type="checkbox" aria-label="..."></span> <input
+									id="filterInputGenre" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonGenre"
+									value="" onchange="updateEnablement('Genre')">
 							</div>
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonYear">Year</span>
-								<span class="input-group-addon"><input id="filterEnableYear" type="checkbox" aria-label="..."></span>
-								<input id="filterInputYear" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonYear" value="" onchange="updateEnablement('Year')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonYear">Year</span> <span
+									class="input-group-addon"><input id="filterEnableYear" type="checkbox" aria-label="..."></span> <input
+									id="filterInputYear" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonYear"
+									value="" onchange="updateEnablement('Year')">
 							</div>
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="filterInputAddonTrack">Track</span>
-								<span class="input-group-addon"><input id="filterEnableTrack" type="checkbox" aria-label="..."></span>
-								<input id="filterInputTrack" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTrack" value="" onchange="updateEnablement('Track')">
+								<span class="input-group-addon taginput_addon" id="filterInputAddonTrack">Track</span> <span
+									class="input-group-addon"><input id="filterEnableTrack" type="checkbox" aria-label="..."></span> <input
+									id="filterInputTrack" type="text" class="form-control" placeholder="" aria-describedby="filterInputAddonTrack"
+									value="" onchange="updateEnablement('Track')">
 							</div>
 
 							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="applyFilter()">Search</button>
 						</div>
 					</div>
 					<div id="tagEditor" class="hide">
-						<div class="col-md-6">
-							<div class="panel panel-default selectedFileDivContainer">
-								<div id="selectedFileDiv" class="panel-body">&nbsp;</div>
-							</div>
+						<div id="tageditor-globalbuttons" class="col-md-6">
+							<button type="button" class="btn btn-default globalbutton" onclick="resetChangesHandler();">Reset</button>
+							<button type="button" class="btn btn-default globalbutton" onclick="resetAllChangesHandler();">Reset all</button>
+							<button type="button" class="btn btn-default globalbutton" disabled>Write</button>
+							<button type="button" class="btn btn-default globalbutton" disabled>Write all</button>
 						</div>
 
 						<div class="col-md-6">
 							<div class="input-group tageditor-input">
-								<span class="input-group-addon taginput_addon" id="tageditor_input_file_addon">file</span> 
-								<input disabled id="tageditor_input_file" type="text" class="form-control" placeholder="" aria-describedby="tageditor_input_file_addon" value="">
+								<span class="input-group-addon taginput_addon" id="tageditor_input_file_addon">file</span> <input disabled
+									id="tageditor_input_file" type="text" class="form-control" placeholder=""
+									aria-describedby="tageditor_input_file_addon" value="">
 							</div>
 						</div>
 
